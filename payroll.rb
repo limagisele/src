@@ -7,12 +7,27 @@ class InvalidUserError < StandardError
     end
 end
 
+class InvalidDateError < StandardError
+    def message
+        return "Date is invalid and/or outside this week!"
+    end
+end
+
 class Timesheet
     def initialize(date, start, finish, leave, time)
         @timesheet = { date: date, start_time: start, finish_time: finish, leave_type: leave, leave_time: time }
     end
 
-    def get_date
+    def self.date
+        begin
+            print "Please enter the date of your timesheet: "
+            input = gets.strip
+            date = Date.parse(input)
+            raise(InvalidDateError) if date.cweek != Date.today.cweek
+        rescue Date::Error
+            raise(InvalidDateError)
+        end
+        return date
     end
 
 end
@@ -87,4 +102,5 @@ employees.each { |person| Employee.list_of_employees << Employee.new(person[:nam
 #         continue = false
 #     end
 # end
+
 
