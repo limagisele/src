@@ -1,13 +1,17 @@
 [
     {
-        "name": "Mary Smith",
-        "id": 456789,
-        "password": 1234,
-        "role": "manager"
+        "name": "mary",
+        "id": 1111,
+        "password": "1234"
     },
     {
-        "name": "John Smith",
-        "id": 23456,
-        "password": 3421
+        "name": "sally",
+        "id": 222,
+        "password": "xyz"
+    },
+    {
+        "name": "bob",
+        "id": 345,
+        "password": "abcd"
     }
 ]
