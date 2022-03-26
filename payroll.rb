@@ -36,9 +36,9 @@ class Timesheet
         @timesheet = { start_time: start, finish_time: finish, leave_type: leave, leave_time: time }
     end
 
-    def self.date
+    def self.date(period)
         begin
-            print "Please enter the date of for your entry: "
+            print "Please enter the #{period.upcase} DATE of your entry (DD.MM.YYYY): "
             input = gets.strip
             date = Date.parse(input)
             raise(InvalidDateError) if date.cweek != Date.today.cweek || input.empty?
@@ -48,8 +48,9 @@ class Timesheet
         return date
     end
 
-    def self.time(date)
+    def self.time(period, date)
         begin
+            print "Please enter the #{period.upcase} TIME of your entry (HH:MM - 24h format): "
             input = gets.strip.split(/:/)
             raise(InvalidTimeError) if input.empty? || input.include?(':')
 
@@ -87,16 +88,15 @@ class Employee
     end
 end
 
-# Include list of leave paycodes
+# Includes list of leave paycodes and method to get leave from user
 module PayableLeave
-
     @@leave = ["sick", "annual", "bereavement", "unpaid", "parental", "long service", "public holiday"]
 
     def self.leave
         print "Please enter type of leave: "
         input = gets.chomp.downcase
         input.slice!(" leave")
-        print "How many minutes are you using for this leave? "
+        print "How many MINUTES are you using for this leave? "
         minutes = gets.strip.to_i
         raise(InvalidLeaveError) if input.nil? || !@@leave.include?(input)
 
@@ -107,37 +107,46 @@ end
 employees = JSON.load_file('employees.json', symbolize_names: true)
 employees.each { |person| Employee.list_of_employees << Employee.new(person[:name], person[:id], person[:password]) }
 
-# puts "Welcome to the Alternative Payroll Program"
-# begin
-#     print "Please enter your employee ID: "
-#     username = gets.chomp.to_i
-#     print "Please enter your password: "
-#     password = gets.chomp
-#     user = Employee.find_employee(username, password)
-# rescue InvalidUserError => e
-#     system "clear"
-#     puts e.message
-#     retry
-# end
-# system "clear"
-# puts "Hello, #{user.name}!"
+puts "Welcome to the Alternative Payroll Program"
+begin
+    print "Please enter your employee ID: "
+    user_id = gets.chomp.to_i
+    print "Please enter your password: "
+    user_code = gets.chomp
+    user = Employee.find_employee(user_id, user_code)
+rescue InvalidUserError => e
+    system "clear"
+    puts e.message
+    retry
+end
+system "clear"
+puts "Hello, #{user.name.capitalize}!"
 
-# continue = true
-# while continue
-#     puts "What would you like to do with your timesheet today?"
-#     puts "1. Add new entry, 2. Edit existing timesheet, 3. Exit"
-#     print "Type 1, 2 or 3: "
-#     option = gets.chomp
-    
-#     case option
-#     when "1"
+continue = true
+while continue
+    puts "What would you like to do today?"
+    puts "1. Create new timesheet, 2. Edit existing timesheet, 3. Exit"
+    print "Type 1, 2 or 3: "
+    option = gets.chomp
 
-#     when "2"
+    case option
+    when "1"
+        begin
+            start_date = Timesheet.date("start")
+            start_time = Timesheet.time("start", start_date)
+            end_date = Timesheet.date("end")
+            finish_time = Timesheet.time("finish", end_date)
+            leave_taken = PayableLeave.leave
+        rescue InvalidDateError => e
+            puts e.message
+            retry
+        end
+    when "2"
 
-#     when "3"
-#         continue = false
-#     end
-# end
+    when "3"
+        continue = false
+    end
+end
 
 # date = Date.parse("26.03.2022")
 # p time = Time.new(date.year, date.month, date.day, 20, 30, 0 )
