@@ -1,7 +1,7 @@
 require './payroll'
 
 describe Timesheet do
-    describe '#self.date' do
+    describe '#date' do
         it 'returns a valid date from user input' do
             allow(Timesheet).to receive(:gets).and_return('26/03.2022')
             expect(Timesheet.date).to eq (Date.parse('2022-03-26'))
@@ -19,7 +19,7 @@ describe Timesheet do
             expect { Timesheet.date }.to raise_error(InvalidDateError)
         end
     end
-    describe '#self.time' do
+    describe '#time' do
         it 'returns a valid Time instance from user input' do
             allow(Timesheet).to receive(:gets).and_return('20:30')
             expect(Timesheet.time(Date.parse('2022-03-26'))).to be_an_instance_of Time
@@ -39,14 +39,27 @@ describe Timesheet do
     end
 end
 
+describe PayableLeave do
+    describe '#leave' do
+        it 'returns valid leave type and respective time entered by user' do
+            allow(PayableLeave).to receive(:gets).and_return('Long Service Leave', '480')
+            expect(PayableLeave.leave).to eq(['long service', 480])
+        end
+        it 'returns error if user\'s entry is empty or time is not numeric' do
+            allow(PayableLeave).to receive(:gets).and_return('   ', "fghj")
+            expect { PayableLeave.leave }.to raise_error(InvalidLeaveError)
+        end
+    end
+end
+
 describe Employee do
-    describe '#self.employees' do
+    describe '#employees' do
         it 'returns array of employees' do
             expect(Employee.list_of_employees.length).to eq 3
         end
     end
 
-    describe '#self.find_employee' do
+    describe '#find_employee' do
         it 'returns an instance of Employee when exists' do
             found_employee = Employee.find_employee(345, 'abcd')
             expect(found_employee).to be_an_instance_of Employee

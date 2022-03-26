@@ -23,15 +23,22 @@ class InvalidTimeError < StandardError
     end
 end
 
+# Error raised if leave type does not exist or time is not in the right format
+class InvalidLeaveError < StandardError
+    def message
+        return "Leave type entered does not exist and/or time (minutes) is not correct!"
+    end
+end
+
 # Create instances of timesheet everytime user creates a new timesheet entry
 class Timesheet
-    def initialize(date, start, finish, leave, time)
-        @timesheet = { date: date, start_time: start, finish_time: finish, leave_type: leave, leave_time: time }
+    def initialize(start, finish, leave, time)
+        @timesheet = { start_time: start, finish_time: finish, leave_type: leave, leave_time: time }
     end
 
     def self.date
         begin
-            print "Please enter the date of your timesheet: "
+            print "Please enter the date of for your entry: "
             input = gets.strip
             date = Date.parse(input)
             raise(InvalidDateError) if date.cweek != Date.today.cweek || input.empty?
@@ -80,12 +87,22 @@ class Employee
     end
 end
 
+# Include list of leave paycodes
 module PayableLeave
-    def paycode
-        @leave = ["sick", "annual", "bereavement", "unpaid", "parental", "long service", "public holiday"]
+
+    @@leave = ["sick", "annual", "bereavement", "unpaid", "parental", "long service", "public holiday"]
+
+    def self.leave
+        print "Please enter type of leave: "
+        input = gets.chomp.downcase
+        input.slice!(" leave")
+        print "How many minutes are you using for this leave? "
+        minutes = gets.strip.to_i
+        raise(InvalidLeaveError) if input.nil? || !@@leave.include?(input)
+
+        return input, minutes
     end
 end
-
 
 employees = JSON.load_file('employees.json', symbolize_names: true)
 employees.each { |person| Employee.list_of_employees << Employee.new(person[:name], person[:id], person[:password]) }
@@ -123,9 +140,8 @@ employees.each { |person| Employee.list_of_employees << Employee.new(person[:nam
 # end
 
 # date = Date.parse("26.03.2022")
-
 # p time = Time.new(date.year, date.month, date.day, 20, 30, 0 )
 # p time2 = Time.new(date.year, date.month, date.day, 23, 30, 0 )
 # p (time2 - time) / 3600
-# p time.class
-# puts date
+# puts time.strftime("%H:%M")
+# puts time.strftime("%d/%m/%Y")
