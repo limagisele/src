@@ -1,18 +1,29 @@
 require 'date'
+require 'time'
 require 'json'
 
+# Error raised if user does not exit or password does not match user
 class InvalidUserError < StandardError
     def message
         return "Wrong ID and/or password!"
     end
 end
 
+# Error raised if date format cannot be converted into Date instance or if it is outside current week
 class InvalidDateError < StandardError
     def message
-        return "Date is invalid and/or outside this week!"
+        return "Date entered is invalid and/or outside this week!"
     end
 end
 
+# Error raised if time format cannot be converted into Time instance
+class InvalidTimeError < StandardError
+    def message
+        return "Time entered is not in the right format!"
+    end
+end
+
+# Create instances of timesheet everytime user creates a new timesheet entry
 class Timesheet
     def initialize(date, start, finish, leave, time)
         @timesheet = { date: date, start_time: start, finish_time: finish, leave_type: leave, leave_time: time }
@@ -23,15 +34,27 @@ class Timesheet
             print "Please enter the date of your timesheet: "
             input = gets.strip
             date = Date.parse(input)
-            raise(InvalidDateError) if date.cweek != Date.today.cweek
-        rescue Date::Error
+            raise(InvalidDateError) if date.cweek != Date.today.cweek || input.empty?
+        rescue ArgumentError
             raise(InvalidDateError)
         end
         return date
     end
 
+    def self.time(date)
+        begin
+            input = gets.strip.split(/:/)
+            raise(InvalidTimeError) if input.empty? || input.include?(':')
+
+            time = Time.new(date.year, date.month, date.day, Integer(input[0]), Integer(input[1]), 0)
+        rescue ArgumentError
+            raise(InvalidTimeError)
+        end
+        return time
+    end
 end
 
+# Create instances of employee with all info required for payroll
 class Employee
     attr_reader :name, :id, :password
     attr_accessor :timesheets
@@ -63,10 +86,6 @@ module PayableLeave
     end
 end
 
-
-# date = Date.parse('2022.02.23')
-# puts date
-# puts date.cweek
 
 employees = JSON.load_file('employees.json', symbolize_names: true)
 employees.each { |person| Employee.list_of_employees << Employee.new(person[:name], person[:id], person[:password]) }
@@ -103,4 +122,10 @@ employees.each { |person| Employee.list_of_employees << Employee.new(person[:nam
 #     end
 # end
 
+# date = Date.parse("26.03.2022")
 
+# p time = Time.new(date.year, date.month, date.day, 20, 30, 0 )
+# p time2 = Time.new(date.year, date.month, date.day, 23, 30, 0 )
+# p (time2 - time) / 3600
+# p time.class
+# puts date
