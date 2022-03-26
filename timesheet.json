@@ -2,8 +2,8 @@
     {
         "timesheet": {
             "date": "03.02.22",
-            "start_time": 0600,
-            "finish_time": 1300,
+            "start_time": "06:00",
+            "finish_time": "13:00",
             "leave": {
                 "sick_leave": 60
             }
@@ -12,8 +12,8 @@
     {
         "timesheet": {
             "date": "04.02.22",
-            "start_time": 0600,
-            "finish_time": 1400,
+            "start_time": "06:00",
+            "finish_time": "13:00",
             "leave": {
             }
         }

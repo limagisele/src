@@ -90,10 +90,17 @@ end
 
 # Includes list of leave paycodes and method to get leave from user
 module PayableLeave
-    @@leave = ["sick", "annual", "bereavement", "unpaid", "parental", "long service", "public holiday"]
+    @@leave = ["annual", "bereavement", "long service", "parental", "public holiday", "sick", "unpaid"]
+
+    def self.display_leave_type
+        @@leave.each { |leave_type| print leave_type.capitalize + " / " }
+    end
 
     def self.leave
-        print "Please enter type of leave: "
+        puts "Please choose one of the options below:"
+        PayableLeave.display_leave_type
+        puts "\n"
+        print "Type here your leave: "
         input = gets.chomp.downcase
         input.slice!(" leave")
         print "How many MINUTES are you using for this leave? "
@@ -136,7 +143,11 @@ while continue
             start_time = Timesheet.time("start", start_date)
             end_date = Timesheet.date("end")
             finish_time = Timesheet.time("finish", end_date)
-            leave_taken = PayableLeave.leave
+            print "Do you have any leave to enter for this timesheet? (Y/N) "
+            input = gets.chomp.downcase
+            leave_taken = PayableLeave.leave if input.include?("y")
+            user.timesheets << Timesheet.new(start_time, finish_time, leave_taken[0], leave_taken[1])
+            puts user.timesheets
         rescue InvalidDateError => e
             puts e.message
             retry
