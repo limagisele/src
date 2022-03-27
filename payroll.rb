@@ -49,11 +49,18 @@ class Timesheet
         return date
     end
 
+    def self.time_casting
+        input = gets.strip.split(/:/)
+        # "08" and "09" cannot be casted to Integer so need to delete prefix "0"
+        new_input = input.map { |number| number.delete_prefix("0") }
+        raise(InvalidTimeError) if new_input.empty? || new_input.include?('.')
+
+        return new_input
+    end
+
     def self.time(date)
         begin
-            input = gets.strip.split(/:/)
-            raise(InvalidTimeError) if input.empty? || input.include?('.')
-
+            input = Timesheet.time_casting
             time = Time.new(date.year, date.month, date.day, Integer(input[0]), Integer(input[1]), 0)
         rescue ArgumentError
             raise(InvalidTimeError)
@@ -72,6 +79,7 @@ class Timesheet
         puts "Start: #{start.strftime('%d.%m.%Y -> %H:%M')}"
         puts "Finish: #{finish.strftime('%d.%m.%Y -> %H:%M')}"
         puts "Leave applied: #{leave[0]} leave -> #{leave[1]} minutes"
+        puts "-" * 45
         print "Is data entered correct? (Y/N)? "
     end
 end
@@ -174,8 +182,11 @@ while continue
             system "clear"
             Timesheet.display_timesheet(user.name, start_time, finish_time, leave_taken)
             input2 = gets.chomp.downcase
-            user.timesheets << Timesheet.new(start_time, finish_time, leave_taken[0], leave_taken[1]) if input2.include?("y") 
-            puts user.timesheets[-1].timesheet
+            next unless input2.include?("y")
+
+            user.timesheets << Timesheet.new(start_time, finish_time, leave_taken[0], leave_taken[1])
+            puts "Timesheet saved successfully!"
+          # puts user.timesheets[-1].timesheet
         rescue InvalidDateError, InvalidTimeError => e
             puts e.message
             retry
