@@ -52,7 +52,7 @@ class Timesheet
     def self.time(date)
         begin
             input = gets.strip.split(/:/)
-            raise(InvalidTimeError) if input.empty? || input.include?(':')
+            raise(InvalidTimeError) if input.empty? || input.include?('.')
 
             time = Time.new(date.year, date.month, date.day, Integer(input[0]), Integer(input[1]), 0)
         rescue ArgumentError
@@ -67,11 +67,11 @@ class Timesheet
 
     def self.display_timesheet(name, start, finish, leave)
         puts "Please confirm if timesheet below is correct:"
-        puts "#{name}'s New Timesheet"
-        puts "-" * 55
+        puts "#{name.capitalize}'s New Timesheet"
+        puts "-" * 45
         puts "Start: #{start.strftime('%d.%m.%Y -> %H:%M')}"
         puts "Finish: #{finish.strftime('%d.%m.%Y -> %H:%M')}"
-        puts "Leave applied: #{leave[0].capitalize || 'N/A'} leave -> #{leave[1] || 0} minutes"
+        puts "Leave applied: #{leave[0]} leave -> #{leave[1]} minutes"
         print "Is data entered correct? (Y/N)? "
     end
 end
@@ -166,12 +166,16 @@ while continue
 
             print "Do you have any leave to enter for this timesheet? (Y/N) "
             input = gets.chomp.downcase
-            leave_taken = PayableLeave.leave if input.include?("y")
+            leave_taken = if input.include?("y")
+                PayableLeave.leave
+                          else
+                ["N/A", 0]
+                          end
             system "clear"
             Timesheet.display_timesheet(user.name, start_time, finish_time, leave_taken)
             input2 = gets.chomp.downcase
             user.timesheets << Timesheet.new(start_time, finish_time, leave_taken[0], leave_taken[1]) if input2.include?("y") 
-            puts user.timesheets[0]
+            puts user.timesheets[-1].timesheet
         rescue InvalidDateError, InvalidTimeError => e
             puts e.message
             retry
