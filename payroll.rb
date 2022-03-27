@@ -32,6 +32,8 @@ end
 
 # Create instances of timesheet everytime user creates a new timesheet entry
 class Timesheet
+    attr_accessor :timesheet
+
     def initialize(start, finish, leave, time)
         @timesheet = { start_time: start, finish_time: finish, leave_type: leave, leave_time: time }
     end
@@ -62,6 +64,16 @@ class Timesheet
     def self.date_time_prompt(period, format_example)
         print "Please enter the #{period.upcase} of your entry (#{format_example.upcase}): "
     end
+
+    def self.display_timesheet(name, start, finish, leave)
+        puts "Please confirm if timesheet below is correct:"
+        puts "#{name}'s New Timesheet"
+        puts "-" * 55
+        puts "Start: #{start.strftime('%d.%m.%Y -> %H:%M')}"
+        puts "Finish: #{finish.strftime('%d.%m.%Y -> %H:%M')}"
+        puts "Leave applied: #{leave[0].capitalize || 'N/A'} leave -> #{leave[1] || 0} minutes"
+        print "Is data entered correct? (Y/N)? "
+    end
 end
 
 # Create instances of employee with all info required for payroll
@@ -87,16 +99,6 @@ class Employee
         raise(InvalidUserError) if found_employee.nil?
 
         return found_employee
-    end
-
-    def display_timesheet
-        puts "Please confirm if timesheet below is correct."
-        puts "Working Hours Timesheet"
-        puts "-" * 25
-        puts "Start: #{@timesheets[:start_time]}"
-        puts "Finish: #{@timesheets[:finish_time]}"
-        puts "Leave applied: #{@timesheets[:leave_type]} -> #{@timesheets[:leave_time]} minutes"
-        print "Is data entered correct? (Y/N)?"
     end
 end
 
@@ -143,9 +145,9 @@ puts "Hello, #{user.name.capitalize}!"
 
 continue = true
 while continue
-    puts "What would you like to do today?"
+    puts "What would you like to do?"
     puts "1. Create new timesheet, 2. Edit existing timesheet, 3. Exit"
-    print "Type 1, 2 or 3: "
+    print "Please type 1, 2 or 3: "
     option = gets.chomp
 
     case option
@@ -165,9 +167,11 @@ while continue
             print "Do you have any leave to enter for this timesheet? (Y/N) "
             input = gets.chomp.downcase
             leave_taken = PayableLeave.leave if input.include?("y")
-            user.timesheets << Timesheet.new(start_time, finish_time, leave_taken[0], leave_taken[1])
             system "clear"
-            user.display_timesheet
+            Timesheet.display_timesheet(user.name, start_time, finish_time, leave_taken)
+            input2 = gets.chomp.downcase
+            user.timesheets << Timesheet.new(start_time, finish_time, leave_taken[0], leave_taken[1]) if input2.include?("y") 
+            puts user.timesheets[0]
         rescue InvalidDateError, InvalidTimeError => e
             puts e.message
             retry
