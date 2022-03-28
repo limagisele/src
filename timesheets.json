@@ -11,15 +11,8 @@
     "id": 222,
     "timesheets": [
       {
-        "start_time": "2022-03-28 08:00:00 +1100",
-        "finish_time": "2022-03-28 10:00:00 +1100",
-        "working_hours": 2.0,
-        "leave_type": "N/A",
-        "leave_time": 0
-      },
-      {
-        "start_time": "2022-03-30 06:00:00 +1100",
-        "finish_time": "2022-03-30 14:00:00 +1100",
+        "start_time": "2022-03-31 06:00:00 +1100",
+        "finish_time": "2022-03-31 14:00:00 +1100",
         "working_hours": 8.0,
         "leave_type": "N/A",
         "leave_time": 0

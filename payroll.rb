@@ -140,15 +140,10 @@ module PayableLeave
     end
 end
 
-def timesheet_exist?(user_time, timesheet, timesheet_time)
+def timesheet_index(user_time, timesheet, timesheet_time)
     day = user_time.day.to_s
-    date_check = timesheet.find { |elem| elem[timesheet_time][8..9] == day }
-    unless date_check.nil?
-        puts "Timesheet already exists for this date."
-        puts "Please choose a different date or select 'Edit existing timesheet' on the menu."
-        return true
-    end
-    return false
+    index = timesheet.find_index { |elem| elem[timesheet_time][8..9] == day }
+    return index
 end
 
 employees = JSON.load_file('employees.json', symbolize_names: true)
@@ -171,7 +166,7 @@ system "clear"
 puts "Hello, #{user.name.capitalize}!"
 # Identify employee's timesheets from the file
 user_timesheet = timesheet_file.find { |employee| employee[:id] == user.id }
-
+user_timesheet_temp = user_timesheet
 continue = true
 while continue
     puts "What would you like to do?"
@@ -188,7 +183,11 @@ while continue
             start_time = Timesheet.time(start_date)
 
             # Check if a timesheet for the date entered already exists
-            next if timesheet_exist?(start_time, user_timesheet[:timesheets], :start_time)
+            unless timesheet_index(start_time, user_timesheet[:timesheets], :start_time).nil?
+                puts "Timesheet already exists for this date."
+                puts "Please choose a different date or select 'Edit existing timesheet' on the menu."
+                next
+            end
 
             Timesheet.date_time_prompt('end date', 'DD.MM.YYYY')
             end_date = Timesheet.date
@@ -224,7 +223,51 @@ while continue
             retry
         end
     when "2"
+        begin
+            Timesheet.date_time_prompt('start date', 'DD.MM.YYYY')
+            start_date = Timesheet.date
+            Timesheet.date_time_prompt('start time', '24h format - HH:MM')
+            start_time = Timesheet.time(start_date)
 
+            # Check if a timesheet for the date entered already exists
+            index = timesheet_index(start_time, user_timesheet[:timesheets], :start_time)
+            if index.nil?
+                puts "Timesheet does not exist for this date."
+                puts "Please choose a different date or select 'Create new timesheet' on the menu."
+                next
+            end
+
+            Timesheet.date_time_prompt('end date', 'DD.MM.YYYY')
+            end_date = Timesheet.date
+            Timesheet.date_time_prompt('finish time', '24h format - HH:MM')
+            finish_time = Timesheet.time(end_date)
+            raise(InvalidDateError) if start_date > end_date
+            raise(InvalidTimeError) if start_time >= finish_time
+
+            print "Do you have any leave to enter for this timesheet? (Y/N) "
+            input = gets.chomp.downcase
+            leave_taken = if input.include?("y")
+                PayableLeave.leave
+                          else
+                ["N/A", 0]
+                          end
+            system "clear"
+            Timesheet.display_timesheet(user.name, start_time, finish_time, leave_taken)
+            input2 = gets.chomp.downcase
+            next unless input2.include?("y")
+
+            # Change timesheet for the user and add into array of timesheets
+            user.timesheets << Timesheet.new(start_time, finish_time, leave_taken[0], leave_taken[1])
+            # Update user's timesheets in the JSON file
+            user_timesheet[:timesheets].clear
+            File.write('timesheets.json', JSON.pretty_generate(timesheet_file))
+            user.timesheets.each { |object| user_timesheet[:timesheets] << object.timesheet }            # Save change into JSON file
+            File.write('timesheets.json', JSON.pretty_generate(timesheet_file))
+            puts "Timesheet saved successfully!"
+        rescue InvalidDateError, InvalidTimeError => e
+            puts e.message
+            retry
+        end
     when "3"
         continue = false
     end
