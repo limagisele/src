@@ -142,7 +142,7 @@ end
 
 employees = JSON.load_file('employees.json', symbolize_names: true)
 employees.each { |person| Employee.list_of_employees << Employee.new(person[:name], person[:id], person[:password]) }
-timesheet_file = JSON.load_file('timesheet.json', symbolize_names: true)
+timesheet_file = JSON.load_file('timesheets.json', symbolize_names: true)
 
 puts "Welcome to the Alternative Payroll Program"
 begin
@@ -158,6 +158,8 @@ rescue InvalidUserError => e
 end
 system "clear"
 puts "Hello, #{user.name.capitalize}!"
+# Identify employee's timesheets from the file
+user_timesheet = timesheet_file.find { |employee| employee[:id] == user.id }
 
 continue = true
 while continue
@@ -173,6 +175,16 @@ while continue
             start_date = Timesheet.date
             Timesheet.date_time_prompt('start time', '24h format - HH:MM')
             start_time = Timesheet.time(start_date)
+
+            # Check if a timesheet for the date entered already exists
+            day = start_time.day.to_s
+            date_check = user_timesheet[:timesheets].find { |timesheet| timesheet[:start_time][8..9] == day }
+            unless date_check.nil?
+                puts "Timesheet already exists for this date."
+                puts "Please choose a different date or select 'Edit existing timesheet' on the menu."
+                next
+            end
+
             Timesheet.date_time_prompt('end date', 'DD.MM.YYYY')
             end_date = Timesheet.date
             Timesheet.date_time_prompt('finish time', '24h format - HH:MM')
@@ -197,11 +209,10 @@ while continue
             # Sort timesheets by start date
             user.timesheets.sort_by! { |object| object.timesheet[:start_time] }
             # Update user's timesheets in the JSON file
-            user_timesheet = timesheet_file.find { |employee| employee[:id] == user.id }
-            user_timesheet[:timesheet].clear
-            File.write('timesheet.json', JSON.pretty_generate(timesheet_file))
-            user.timesheets.each { |object| user_timesheet[:timesheet] << object.timesheet }            # Save change into JSON file
-            File.write('timesheet.json', JSON.pretty_generate(timesheet_file))
+            user_timesheet[:timesheets].clear
+            File.write('timesheets.json', JSON.pretty_generate(timesheet_file))
+            user.timesheets.each { |object| user_timesheet[:timesheets] << object.timesheet }            # Save change into JSON file
+            File.write('timesheets.json', JSON.pretty_generate(timesheet_file))
             puts "Timesheet saved successfully!"
         rescue InvalidDateError, InvalidTimeError => e
             puts e.message
