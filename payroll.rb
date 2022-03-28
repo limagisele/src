@@ -192,12 +192,17 @@ while continue
             input2 = gets.chomp.downcase
             next unless input2.include?("y")
 
+            # Create new timesheet for the user and add into array of timesheets
             user.timesheets << Timesheet.new(start_time, finish_time, leave_taken[0], leave_taken[1])
+            # Sort timesheets by start date
+            user.timesheets.sort_by! { |object| object.timesheet[:start_time] }
+            # Update user's timesheets in the JSON file
             user_timesheet = timesheet_file.find { |employee| employee[:id] == user.id }
-            user_timesheet[:timesheet] << user.timesheets[-1].timesheet
+            user_timesheet[:timesheet].clear
+            File.write('timesheet.json', JSON.pretty_generate(timesheet_file))
+            user.timesheets.each { |object| user_timesheet[:timesheet] << object.timesheet }            # Save change into JSON file
             File.write('timesheet.json', JSON.pretty_generate(timesheet_file))
             puts "Timesheet saved successfully!"
-          # puts user.timesheets[-1].timesheet
         rescue InvalidDateError, InvalidTimeError => e
             puts e.message
             retry
@@ -208,8 +213,3 @@ while continue
         continue = false
     end
 end
-
-# date = Date.parse("26.03.2022")
-# p time = Time.new(date.year, date.month, date.day, 20, 30, 0 )
-# p time2 = Time.new(date.year, date.month, date.day, 23, 30, 0 )
-# p (time2 - time) / 3600

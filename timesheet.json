@@ -3,13 +3,7 @@
     "name": "mary",
     "id": 1111,
     "timesheet": [
-      {
-        "start_time": "2022-03-30 14:00:00 +1100",
-        "finish_time": "2022-03-30 20:00:00 +1100",
-        "working_hours": 6.0,
-        "leave_type": "unpaid",
-        "leave_time": 120
-      }
+
     ]
   },
   {
@@ -17,18 +11,18 @@
     "id": 222,
     "timesheet": [
       {
-        "start_time": "2022-03-28 06:00:00 +1100",
-        "finish_time": "2022-03-28 12:00:00 +1100",
-        "working_hours": 6.0,
-        "leave_type": "sick",
-        "leave_time": 120
+        "start_time": "2022-03-28 08:00:00 +1100",
+        "finish_time": "2022-03-28 10:00:00 +1100",
+        "working_hours": 2.0,
+        "leave_type": "N/A",
+        "leave_time": 0
       },
       {
-        "start_time": "2022-03-29 08:00:00 +1100",
-        "finish_time": "2022-03-29 10:30:00 +1100",
-        "working_hours": 2.5,
-        "leave_type": "annual",
-        "leave_time": 240
+        "start_time": "2022-03-30 06:00:00 +1100",
+        "finish_time": "2022-03-30 14:00:00 +1100",
+        "working_hours": 8.0,
+        "leave_type": "N/A",
+        "leave_time": 0
       }
     ]
   },
