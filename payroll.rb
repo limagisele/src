@@ -140,6 +140,17 @@ module PayableLeave
     end
 end
 
+def timesheet_exist?(user_time, timesheet, timesheet_time)
+    day = user_time.day.to_s
+    date_check = timesheet.find { |elem| elem[timesheet_time][8..9] == day }
+    unless date_check.nil?
+        puts "Timesheet already exists for this date."
+        puts "Please choose a different date or select 'Edit existing timesheet' on the menu."
+        return true
+    end
+    return false
+end
+
 employees = JSON.load_file('employees.json', symbolize_names: true)
 employees.each { |person| Employee.list_of_employees << Employee.new(person[:name], person[:id], person[:password]) }
 timesheet_file = JSON.load_file('timesheets.json', symbolize_names: true)
@@ -177,13 +188,7 @@ while continue
             start_time = Timesheet.time(start_date)
 
             # Check if a timesheet for the date entered already exists
-            day = start_time.day.to_s
-            date_check = user_timesheet[:timesheets].find { |timesheet| timesheet[:start_time][8..9] == day }
-            unless date_check.nil?
-                puts "Timesheet already exists for this date."
-                puts "Please choose a different date or select 'Edit existing timesheet' on the menu."
-                next
-            end
+            next if timesheet_exist?(start_time, user_timesheet[:timesheets], :start_time)
 
             Timesheet.date_time_prompt('end date', 'DD.MM.YYYY')
             end_date = Timesheet.date
