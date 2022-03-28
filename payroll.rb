@@ -1,6 +1,7 @@
 require 'date'
 require 'time'
 require 'json'
+require 'csv'
 
 # Error raised if user does not exit or password does not match user
 class InvalidUserError < StandardError
@@ -35,7 +36,13 @@ class Timesheet
     attr_accessor :timesheet
 
     def initialize(start, finish, leave, time)
-        @timesheet = { start_time: start, finish_time: finish, leave_type: leave, leave_time: time }
+        @timesheet = {
+          start_time: start,
+          finish_time: finish,
+          working_hours: (finish - start) / 3600,
+          leave_type: leave,
+          leave_time: time
+        }
     end
 
     def self.date
@@ -135,6 +142,7 @@ end
 
 employees = JSON.load_file('employees.json', symbolize_names: true)
 employees.each { |person| Employee.list_of_employees << Employee.new(person[:name], person[:id], person[:password]) }
+timesheet_file = JSON.load_file('timesheet.json', symbolize_names: true)
 
 puts "Welcome to the Alternative Payroll Program"
 begin
@@ -185,6 +193,9 @@ while continue
             next unless input2.include?("y")
 
             user.timesheets << Timesheet.new(start_time, finish_time, leave_taken[0], leave_taken[1])
+            user_timesheet = timesheet_file.find { |employee| employee[:id] == user.id }
+            user_timesheet[:timesheet] << user.timesheets[-1].timesheet
+            File.write('timesheet.json', JSON.pretty_generate(timesheet_file))
             puts "Timesheet saved successfully!"
           # puts user.timesheets[-1].timesheet
         rescue InvalidDateError, InvalidTimeError => e
@@ -202,5 +213,3 @@ end
 # p time = Time.new(date.year, date.month, date.day, 20, 30, 0 )
 # p time2 = Time.new(date.year, date.month, date.day, 23, 30, 0 )
 # p (time2 - time) / 3600
-# puts time.strftime("%H:%M")
-# puts time.strftime("%d/%m/%Y")
