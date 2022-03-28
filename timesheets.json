@@ -16,6 +16,27 @@
         "working_hours": 8.0,
         "leave_type": "N/A",
         "leave_time": 0
+      },
+      {
+        "start_time": "2022-03-30 08:00:00 +1100",
+        "finish_time": "2022-03-30 12:00:00 +1100",
+        "working_hours": 4.0,
+        "leave_type": "N/A",
+        "leave_time": 0
+      },
+      {
+        "start_time": "2022-03-29 06:00:00 +1100",
+        "finish_time": "2022-03-29 12:00:00 +1100",
+        "working_hours": 6.0,
+        "leave_type": "N/A",
+        "leave_time": 0
+      },
+      {
+        "start_time": "2022-03-28 09:00:00 +1100",
+        "finish_time": "2022-03-28 10:00:00 +1100",
+        "working_hours": 1.0,
+        "leave_type": "sick",
+        "leave_time": 240
       }
     ]
   },
