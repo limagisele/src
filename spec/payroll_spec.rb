@@ -3,8 +3,8 @@ require './payroll'
 describe Timesheet do
     describe '#date' do
         it 'returns a valid date from user input' do
-            allow(Timesheet).to receive(:gets).and_return('26/03.2022')
-            expect(Timesheet.date).to eq Date.parse('2022-03-26')
+            allow(Timesheet).to receive(:gets).and_return('29/03.2022')
+            expect(Timesheet.date).to eq Date.parse('2022-03-29')
         end
         it 'returns InvalidDateError if date outside current week' do
             allow(Timesheet).to receive(:gets).and_return('20/03.2022')
@@ -25,19 +25,19 @@ describe Timesheet do
     describe '#time' do
         it 'returns a valid Time instance from user input' do
             allow(Timesheet).to receive(:gets).and_return('20:30')
-            expect(Timesheet.time(Date.parse('2022-03-26'))).to be_an_instance_of Time
+            expect(Timesheet.time(Date.today)).to be_an_instance_of Time
         end
         it 'returns InvalidTimeError if user\'s input cannot be converted to Time' do
             allow(Timesheet).to receive(:gets).and_return('cgfhf')
-            expect { Timesheet.time(Date.parse('2022-03-26')) }.to raise_error(InvalidTimeError)
+            expect { Timesheet.time(Date.today) }.to raise_error(InvalidTimeError)
         end
         it 'returns InvalidTimeError if user\'s input is nil' do
             allow(Timesheet).to receive(:gets).and_return('     ')
-            expect { Timesheet.time(Date.parse('2022-03-26')) }.to raise_error(InvalidTimeError)
+            expect { Timesheet.time(Date.today) }.to raise_error(InvalidTimeError)
         end
         it 'returns InvalidTimeError if user\'s input is in the format hh.mm' do
             allow(Timesheet).to receive(:gets).and_return('20.30')
-            expect { Timesheet.time(Date.parse('2022-03-26')) }.to raise_error(InvalidTimeError)
+            expect { Timesheet.time(Date.today) }.to raise_error(InvalidTimeError)
         end
     end
 end

@@ -33,10 +33,10 @@
       },
       {
         "start_time": "2022-03-28 09:00:00 +1100",
-        "finish_time": "2022-03-28 10:00:00 +1100",
-        "working_hours": 1.0,
+        "finish_time": "2022-03-28 16:00:00 +1100",
+        "working_hours": 7.0,
         "leave_type": "sick",
-        "leave_time": 240
+        "leave_time": 60
       }
     ]
   },
