@@ -2,34 +2,27 @@
   {
     "name": "mary",
     "id": 1111,
+    "access_level": "standard",
     "timesheets": [
 
     ]
   },
   {
+    "name": "anna",
+    "id": 1234,
+    "access_level": "manager"
+  },
+  {
     "name": "sally",
     "id": 222,
+    "access_level": "standard",
     "timesheets": [
       {
-        "start_time": "2022-03-31 06:00:00 +1100",
-        "finish_time": "2022-03-31 14:00:00 +1100",
-        "working_hours": 8.0,
-        "leave_type": "N/A",
-        "leave_time": 0
-      },
-      {
-        "start_time": "2022-03-30 08:00:00 +1100",
-        "finish_time": "2022-03-30 12:00:00 +1100",
-        "working_hours": 4.0,
-        "leave_type": "N/A",
-        "leave_time": 0
-      },
-      {
-        "start_time": "2022-03-29 06:00:00 +1100",
-        "finish_time": "2022-03-29 12:00:00 +1100",
-        "working_hours": 6.0,
-        "leave_type": "N/A",
-        "leave_time": 0
+        "start_time": "2022-03-29 09:00:00 +1100",
+        "finish_time": "2022-03-29 14:00:00 +1100",
+        "working_hours": 5.0,
+        "leave_type": "annual",
+        "leave_time": 240
       },
       {
         "start_time": "2022-03-28 09:00:00 +1100",
@@ -37,14 +30,27 @@
         "working_hours": 7.0,
         "leave_type": "sick",
         "leave_time": 60
+      },
+      {
+        "start_time": "2022-03-30 14:00:00 +1100",
+        "finish_time": "2022-03-30 20:00:00 +1100",
+        "working_hours": 6.0,
+        "leave_type": "sick",
+        "leave_time": 120
       }
     ]
   },
   {
     "name": "bob",
     "id": 345,
+    "access_level": "standard",
     "timesheets": [
 
     ]
+  },
+  {
+    "name": "matt",
+    "id": 444,
+    "access_level": "manager"
   }
 ]

@@ -3,14 +3,22 @@
         "name": "mary",
         "id": 1111,
         "password": "1234",
+        "access_level": "standard",
         "timesheets": [
 
         ]
     },
     {
+        "name": "anna",
+        "id": 1234,
+        "password": "yyy",
+        "access_level": "manager"
+    },
+    {
         "name": "sally",
         "id": 222,
         "password": "xyz",
+        "access_level": "standard",
         "timesheets": [
 
         ]
@@ -19,8 +27,15 @@
         "name": "bob",
         "id": 345,
         "password": "abcd",
+        "access_level": "standard",
         "timesheets": [
 
         ]
+    },
+    {
+        "name": "matt",
+        "id": 444,
+        "password": "xxx",
+        "access_level": "manager"
     }
 ]
