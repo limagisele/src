@@ -54,8 +54,9 @@ class Employee
     def self.validate_date
         start_date = Timesheet.date('start date')
         start_time = Timesheet.time(start_date, 'start time')
-        end_date = Timesheet.date('end date')
-        raise(InvalidDateError) if start_date > end_date
+        end_date = start_date
+        # end_date = Timesheet.date('end date')
+        # raise(InvalidDateError) if start_date > end_date
 
         finish_time = Timesheet.time(end_date, 'finish time')
         raise(InvalidTimeError) if start_time >= finish_time
