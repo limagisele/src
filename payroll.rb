@@ -8,22 +8,15 @@ using Rainbow
 
 # Includes list of leave paycodes and method to get leave from user
 module PayableLeave
-    @@leave = ["annual", "bereavement", "long service", "parental", "public holiday", "sick", "unpaid"]
-
-    def self.display_leave_type
-        @@leave.each { |leave_type| print "#{leave_type.capitalize} / " }
-    end
+    @@leave = ["Annual", "Bereavement", "Long Service", "Parental", "Public Holiday", "Sick", "Unpaid"]
+    @@prompt = TTY::Prompt.new(interrupt: :exit)
 
     def self.leave
-        puts "Please choose one of the options below:"
-        PayableLeave.display_leave_type
-        puts "\n"
-        print "Type here your leave: "
-        input = gets.chomp.downcase
-        input.slice!(" leave")
-        print "How many MINUTES are you using for this leave? "
-        minutes = gets.strip.to_i
-        raise(InvalidLeaveError) if input.nil? || !@@leave.include?(input)
+        input = @@prompt.select("Choose type of leave:", @@leave)
+        minutes = @@prompt.ask("How many MINUTES?", required: true) do |q|
+            q.validate(/^\d{1,3}\.\d?$/)
+            q.messages[:valid?] = "Invalid entry. Must be valide minutes(000.0)."
+        end
 
         return input, minutes
     end
@@ -50,13 +43,6 @@ class InvalidTimeError < StandardError
     end
 end
 
-# Error raised if leave type does not exist or time is not in the right format
-class InvalidLeaveError < StandardError
-    def message
-        return "Leave type entered does not exist and/or time (minutes) is not correct!"
-    end
-end
-
 # Create instances of timesheet everytime user creates a new timesheet entry
 class Timesheet
     attr_accessor :timesheet
@@ -80,7 +66,7 @@ class Timesheet
 
     def self.date(period)
         begin
-            input = @@prompt.ask("Enter #{period.underline} (DD.MM.YYY):")
+            input = @@prompt.ask("Enter #{period.underline} (DD.MM.YYY):", required: true)
             date = Date.parse(input)
             raise(InvalidDateError) if date.cweek != Date.today.cweek
         rescue ArgumentError
@@ -90,10 +76,10 @@ class Timesheet
     end
 
     def self.time_casting(period)
-        input = @@prompt.ask("Enter #{period.underline} (HH:MM - 24H):").split(/:/)
+        input = @@prompt.ask("Enter #{period.underline} (HH:MM - 24H):", required: true).split(/:/)
         # "08" and "09" cannot be casted to Integer so need to delete prefix "0"
         new_input = input.map { |number| number.delete_prefix("0") }
-        raise(InvalidTimeError) if new_input.empty? || new_input.include?('.')
+        raise(InvalidTimeError) if new_input.include?('.')
 
         return new_input
     end
@@ -109,12 +95,12 @@ class Timesheet
     end
 
     def self.display_timesheet(name, start, finish, leave)
-        puts "#{name.capitalize}'s New Timesheet".underline.bg(:aqua)
-        puts "-" * 45
-        puts "Start: #{start.strftime('%d.%m.%Y -> %H:%M')}"
-        puts "Finish: #{finish.strftime('%d.%m.%Y -> %H:%M')}"
-        puts "Leave applied: #{leave[0]} leave -> #{leave[1]} minutes"
-        puts "-" * 45
+        puts "#{name.capitalize}'s New Timesheet".underline.bg(:antiquewhite).black.bright
+        puts "-" * 40
+        puts "Start: #{start.strftime('%d.%m.%Y -> %H:%M').bright.green}"
+        puts "Finish: #{finish.strftime('%d.%m.%Y -> %H:%M').bright.green}"
+        puts "Leave applied: #{leave[0].bright.green} leave -> #{leave[1].to_s.bright.green} minutes"
+        puts "-" * 40
     end
 end
 
@@ -168,8 +154,8 @@ class Employee
 
     # Add leave into timesheet
     def self.add_leave(user, start_time, finish_time)
-        input = @@prompt.yes?("Do you want to add any leave for this date?")
-        leave_taken = if input == "Yes"
+        input = @@prompt.yes?("Add any leave for this date?")
+        leave_taken = if input == true
                         PayableLeave.leave
                       else
                         ["N/A", 0]
@@ -186,7 +172,7 @@ class Employee
         user.timesheets << Timesheet.new(start_time, finish_time, leave_taken[0], leave_taken[1])
         yield
         File.write('timesheets.json', JSON.pretty_generate(Timesheet.timesheet_file))
-        puts "Timesheet saved successfully!"
+        puts "Timesheet saved successfully!".bg(:yellow).black
     end
 
     # Create a new timesheet
@@ -195,12 +181,12 @@ class Employee
         index = timesheet_index(start_time, timesheet, timesheet_time)
         unless index.nil?
             @@prompt.error("Timesheet already exists for this date.")
-            @@prompt.warn("Try a different date or select 'Edit Timesheet' on the menu below.")
+            @@prompt.say("Try a different date or select 'Edit Timesheet' on the menu below.")
             return
         end
 
         leave_taken, input2 = add_leave(user, start_time, finish_time)
-        return unless input2 == "Yes"
+        return unless input2 == true
 
         save_file(user, start_time, finish_time, leave_taken) { timesheet << user.timesheets[-1].timesheet }
     rescue InvalidDateError, InvalidTimeError => e
@@ -214,12 +200,12 @@ class Employee
         index = timesheet_index(start_time, timesheet, timesheet_time)
         if index.nil?
             @@prompt.error("Timesheet does not exist for this date.")
-            @@promp.warn("Try a different date or select 'Create Timesheet' on the menu below.")
+            @@promp.say("Try a different date or select 'Create Timesheet' on the menu below.")
             return
         end
 
         leave_taken, input2 = add_leave(user, start_time, finish_time)
-        return unless input2 == "Yes"
+        return unless input2 == true
 
         save_file(user, start_time, finish_time, leave_taken) { timesheet[index] = user.timesheets[-1].timesheet }
     rescue InvalidDateError, InvalidTimeError => e
@@ -235,8 +221,8 @@ prompt = TTY::Prompt.new(interrupt: :exit)
 puts "Welcome to the Alternative Payroll Program".blue.bright.underline
 # User signin
 begin
-    user_id = prompt.ask("What's your employee ID?").to_i
-    user_code = prompt.mask("Enter your password:")
+    user_id = prompt.ask("What's your employee ID?", required: true).to_i
+    user_code = prompt.mask("Enter your password:", required: true)
     user = Employee.find_employee(user_id, user_code)
 rescue InvalidUserError => e
     system "clear"
