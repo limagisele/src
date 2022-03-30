@@ -30,15 +30,8 @@ class Employee
         return @@list_of_employees
     end
 
-    # Find an employee matching given id and password
-    # def self.find_employee(id, password)
-    #     found_employee = @@list_of_employees.find { |person| person.id == id && person.password == password }
-    #     raise(InvalidUserError) if found_employee.nil?
-
-    #     return found_employee
-    # end
-
-    # Find an employee with ID only (managers only)
+    # Find an employee with ID and password matching
+    # Managers don't require employees' password to access their timesheets
     def self.find_employee(id, password = nil)
         employee = @@list_of_employees.find { |person| person.id == id }
         unless password.nil?
@@ -129,5 +122,13 @@ class Employee
     rescue InvalidDateError, InvalidTimeError => e
         @@prompt.error(e.message)
         retry
+    end
+
+    def self.manager_timesheet(file, start_time)
+        worker_id = @@prompt.ask("Enter required employee's ID?", required: true).to_i
+        worker = find_employee(worker_id)
+        worker_timesheet = file.find { |employee| employee[:id] == worker.id }
+        puts "Your are now accessing #{worker.name.capitalize}'s timesheet".black.bg(:antiquewhite)
+        yield(worker, worker_timesheet[:timesheets], start_time)
     end
 end

@@ -27,8 +27,8 @@
         "start_time": "2022-03-29 09:00:00 +1100",
         "finish_time": "2022-03-29 14:00:00 +1100",
         "working_hours": 5.0,
-        "leave_type": "annual",
-        "leave_time": 240
+        "leave_type": "Sick",
+        "leave_time": "60"
       },
       {
         "start_time": "2022-03-28 09:00:00 +1100",

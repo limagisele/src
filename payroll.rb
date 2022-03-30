@@ -45,16 +45,20 @@ while continue
     case option
     when 1
         if user_timesheet[:access_level] == "manager"
-            worker_id = prompt.ask("Enter required employee's ID?", required: true).to_i
-            worker = Employee.find_employee(worker_id)
-            worker_timesheet = file.find { |employee| employee[:id] == worker.id }
-            puts "Your are now accessing #{worker.name.capitalize}'s timesheet".black.bg(:antiquewhite)
-            Employee.add_timesheet(worker, worker_timesheet[:timesheets], :start_time)
+            Employee.manager_timesheet(file, :start_time) do |worker, timesheet|
+                Employee.add_timesheet(worker, timesheet, :start_time)
+            end
         else
             Employee.add_timesheet(user, user_timesheet[:timesheets], :start_time)
         end
     when 2
-        Employee.update_timesheet(user, user_timesheet[:timesheets], :start_time)
+        if user_timesheet[:access_level] == "manager"
+            Employee.manager_timesheet(file, :start_time) do |worker, timesheet|
+                Employee.update_timesheet(worker, timesheet, :start_time)
+            end
+        else
+            Employee.update_timesheet(user, user_timesheet[:timesheets], :start_time)
+        end
     when 4
         continue = false
     end
