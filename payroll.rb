@@ -14,7 +14,7 @@ module PayableLeave
     def self.leave
         input = @@prompt.select("Choose type of leave:", @@leave)
         minutes = @@prompt.ask("How many MINUTES?", required: true) do |q|
-            q.validate(/^\d{1,3}\.\d?$/)
+            q.validate(/^\d{1,3}\.?\d?$/)
             q.messages[:valid?] = "Invalid entry. Must be valide minutes(000.0)."
         end
 
@@ -135,7 +135,7 @@ class Employee
     # Identify if timesheet already exists and return its index position
     def self.timesheet_index(user_time, timesheet, timesheet_time)
         day = user_time.day.to_s
-        index = timesheet.find_index { |elem| elem[timesheet_time][8..9] == day }
+        index = timesheet.find_index { |elem| elem[timesheet_time][8..9].delete_prefix("0") == day }
         return index
     end
 
