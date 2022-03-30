@@ -2,6 +2,9 @@ require 'date'
 require 'time'
 require 'json'
 require 'csv'
+require 'tty-prompt'
+require 'rainbow/refinement'
+using Rainbow
 
 # Includes list of leave paycodes and method to get leave from user
 module PayableLeave
@@ -59,6 +62,7 @@ class Timesheet
     attr_accessor :timesheet
 
     @@timesheet_file = JSON.load_file('timesheets.json', symbolize_names: true)
+    @@prompt = TTY::Prompt.new(interrupt: :exit)
 
     def initialize(start, finish, leave, time)
         @timesheet = {
@@ -74,19 +78,19 @@ class Timesheet
         return @@timesheet_file
     end
 
-    def self.date
+    def self.date(period)
         begin
-            input = gets.strip
+            input = @@prompt.ask("Enter #{period.underline} (DD.MM.YYY):")
             date = Date.parse(input)
-            raise(InvalidDateError) if date.cweek != Date.today.cweek || input.empty?
+            raise(InvalidDateError) if date.cweek != Date.today.cweek
         rescue ArgumentError
             raise(InvalidDateError)
         end
         return date
     end
 
-    def self.time_casting
-        input = gets.strip.split(/:/)
+    def self.time_casting(period)
+        input = @@prompt.ask("Enter #{period.underline} (HH:MM - 24H):").split(/:/)
         # "08" and "09" cannot be casted to Integer so need to delete prefix "0"
         new_input = input.map { |number| number.delete_prefix("0") }
         raise(InvalidTimeError) if new_input.empty? || new_input.include?('.')
@@ -94,9 +98,9 @@ class Timesheet
         return new_input
     end
 
-    def self.time(date)
+    def self.time(date, period)
         begin
-            input = Timesheet.time_casting
+            input = time_casting(period)
             time = Time.new(date.year, date.month, date.day, Integer(input[0]), Integer(input[1]), 0)
         rescue ArgumentError
             raise(InvalidTimeError)
@@ -104,19 +108,13 @@ class Timesheet
         return time
     end
 
-    def self.date_time_prompt(period, format_example)
-        print "Please enter the #{period.upcase} of your entry (#{format_example.upcase}): "
-    end
-
     def self.display_timesheet(name, start, finish, leave)
-        puts "Please confirm if timesheet below is correct:"
-        puts "#{name.capitalize}'s New Timesheet"
+        puts "#{name.capitalize}'s New Timesheet".underline.bg(:aqua)
         puts "-" * 45
         puts "Start: #{start.strftime('%d.%m.%Y -> %H:%M')}"
         puts "Finish: #{finish.strftime('%d.%m.%Y -> %H:%M')}"
         puts "Leave applied: #{leave[0]} leave -> #{leave[1]} minutes"
         puts "-" * 45
-        print "Is data entered correct? (Y/N)? "
     end
 end
 
@@ -127,6 +125,7 @@ class Employee
     attr_accessor :timesheets
 
     @@list_of_employees = []
+    @@prompt = TTY::Prompt.new(interrupt: :exit)
 
     def initialize(name, id, password)
         @name = name
@@ -156,25 +155,21 @@ class Employee
 
     # Validate date and time entered by the user
     def self.validate_date
-        Timesheet.date_time_prompt('start date', 'DD.MM.YYYY')
-        start_date = Timesheet.date
-        Timesheet.date_time_prompt('start time', '24h format - HH:MM')
-        start_time = Timesheet.time(start_date)
-        Timesheet.date_time_prompt('end date', 'DD.MM.YYYY')
-        end_date = Timesheet.date
+        start_date = Timesheet.date('start date')
+        start_time = Timesheet.time(start_date, 'start time')
+        end_date = Timesheet.date('end date')
         raise(InvalidDateError) if start_date > end_date
 
-        Timesheet.date_time_prompt('finish time', '24h format - HH:MM')
-        finish_time = Timesheet.time(end_date)
+        finish_time = Timesheet.time(end_date, 'finish time')
         raise(InvalidTimeError) if start_time >= finish_time
+
         return start_time, finish_time
     end
 
     # Add leave into timesheet
     def self.add_leave(user, start_time, finish_time)
-        print "Do you have any leave to enter for this timesheet? (Y/N) "
-        input = gets.chomp.downcase
-        leave_taken = if input.include?("y")
+        input = @@prompt.yes?("Do you want to add any leave for this date?")
+        leave_taken = if input == "Yes"
                         PayableLeave.leave
                       else
                         ["N/A", 0]
@@ -182,7 +177,7 @@ class Employee
         system "clear"
         # Ask for user's confirmation on the new timesheet displayed on the terminal
         Timesheet.display_timesheet(user.name, start_time, finish_time, leave_taken)
-        input2 = gets.chomp.downcase
+        input2 = @@prompt.yes?("Confirm timesheet above?")
         return leave_taken, input2
     end
 
@@ -197,42 +192,38 @@ class Employee
     # Create a new timesheet
     def self.add_timesheet(user, timesheet, timesheet_time)
         start_time, finish_time = validate_date
-        p start_time
-        p finish_time
         index = timesheet_index(start_time, timesheet, timesheet_time)
         unless index.nil?
-            puts "Timesheet already exists for this date."
-            puts "Please choose a different date or select 'Edit existing timesheet' on the menu."
+            @@prompt.error("Timesheet already exists for this date.")
+            @@prompt.warn("Try a different date or select 'Edit Timesheet' on the menu below.")
             return
         end
 
         leave_taken, input2 = add_leave(user, start_time, finish_time)
-        return unless input2.include?("y")
+        return unless input2 == "Yes"
 
         save_file(user, start_time, finish_time, leave_taken) { timesheet << user.timesheets[-1].timesheet }
     rescue InvalidDateError, InvalidTimeError => e
-        puts e.message
+        @@prompt.error(e.message)
         retry
     end
 
     # Update an existing timesheet
     def self.update_timesheet(user, timesheet, timesheet_time)
         start_time, finish_time = validate_date
-        p start_time
-        p finish_time
         index = timesheet_index(start_time, timesheet, timesheet_time)
         if index.nil?
-            puts "Timesheet does not exist for this date."
-            puts "Please choose a different date or select 'Create new timesheet' on the menu."
+            @@prompt.error("Timesheet does not exist for this date.")
+            @@promp.warn("Try a different date or select 'Create Timesheet' on the menu below.")
             return
         end
 
         leave_taken, input2 = add_leave(user, start_time, finish_time)
-        return unless input2.include?("y")
+        return unless input2 == "Yes"
 
         save_file(user, start_time, finish_time, leave_taken) { timesheet[index] = user.timesheets[-1].timesheet }
     rescue InvalidDateError, InvalidTimeError => e
-        puts e.message
+        @@prompt.error(e.message)
         retry
     end
 end
@@ -240,42 +231,44 @@ end
 # Upload employees json file and create instances of Employee
 employees = JSON.load_file('employees.json', symbolize_names: true)
 employees.each { |person| Employee.list_of_employees << Employee.new(person[:name], person[:id], person[:password]) }
-
-puts "Welcome to the Alternative Payroll Program"
+prompt = TTY::Prompt.new(interrupt: :exit)
+puts "Welcome to the Alternative Payroll Program".blue.bright.underline
 # User signin
 begin
-    print "Please enter your employee ID: "
-    user_id = gets.chomp.to_i
-    print "Please enter your password: "
-    user_code = gets.chomp
+    user_id = prompt.ask("What's your employee ID?").to_i
+    user_code = prompt.mask("Enter your password:")
     user = Employee.find_employee(user_id, user_code)
 rescue InvalidUserError => e
     system "clear"
-    puts e.message
+    prompt.error(e.message)
     retry
 end
 system "clear"
-puts "Hello, #{user.name.capitalize}!"
+puts "Hello, #{user.name.capitalize}!".bright
 
 continue = true
 while continue
     # Locate employee's timesheets in the file and reload it
     file = Timesheet.timesheet_file
     user_timesheet = file.find { |employee| employee[:id] == user.id }
-    puts "What would you like to do?"
-    puts "1. Create new timesheet, 2. Edit existing timesheet, 3. Manager's report 4. Exit"
-    print "Please type 1, 2 or 3: "
-    option = gets.chomp
+    option = prompt.select("What would you like to do?") do |menu|
+        menu.enum "."
+
+        menu.choice "Create Timesheet", 1
+        menu.choice "Edit Timesheet", 2
+        menu.choice "Generate manager's report", 3
+        menu.choice "Exit", 4
+    end
     case option
-    when "1"
+    when 1
         # if user is manager
         # ask for which user to create timesheet for
         # Employee.add_timesheet(user, user_timesheet[:timesheets], :start_time)
 
         Employee.add_timesheet(user, user_timesheet[:timesheets], :start_time)
-    when "2"
+    when 2
         Employee.update_timesheet(user, user_timesheet[:timesheets], :start_time)
-    when "4"
+    when 4
         continue = false
     end
 end
