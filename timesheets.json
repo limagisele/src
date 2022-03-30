@@ -4,7 +4,13 @@
     "id": 1111,
     "access_level": "standard",
     "timesheets": [
-
+      {
+        "start_time": "2022-03-30 09:00:00 +1100",
+        "finish_time": "2022-03-30 14:00:00 +1100",
+        "working_hours": 5.0,
+        "leave_type": "Annual",
+        "leave_time": "120"
+      }
     ]
   },
   {
@@ -46,11 +52,18 @@
         "leave_time": "1.5"
       },
       {
-        "start_time": "2022-04-01 12:00:00 +1100",
+        "start_time": "2022-04-01 08:00:00 +1100",
         "finish_time": "2022-04-01 15:00:00 +1100",
-        "working_hours": 3.0,
+        "working_hours": 7.0,
         "leave_type": "Annual",
-        "leave_time": "120.5"
+        "leave_time": "60"
+      },
+      {
+        "start_time": "2022-04-02 12:00:00 +1100",
+        "finish_time": "2022-04-02 15:00:00 +1100",
+        "working_hours": 3.0,
+        "leave_type": "Sick",
+        "leave_time": "180.5"
       }
     ]
   },
