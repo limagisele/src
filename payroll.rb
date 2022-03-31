@@ -15,7 +15,7 @@ require './module/payable_leave'
 employees = JSON.load_file('employees.json', symbolize_names: true)
 employees.each { |person| Employee.list_of_employees << Employee.new(person[:name], person[:id], person[:password]) }
 prompt = TTY::Prompt.new(interrupt: :exit)
-puts "Welcome to the Alternative Payroll Program".blue.bright.underline
+puts "\n Welcome to the Alternative Payroll Program \n".blue.bright.underline
 # User signin
 begin
     user_id = prompt.ask("What's your employee ID?", required: true).to_i
@@ -27,7 +27,7 @@ rescue InvalidUserError => e
     retry
 end
 system "clear"
-puts "Hello, #{user.name.capitalize}!".black.bg(:antiquewhite)
+puts "\n Hello, #{user.name.capitalize}! \n".black.bg(:antiquewhite)
 
 continue = true
 while continue
@@ -58,6 +58,13 @@ while continue
             end
         else
             Employee.update_timesheet(user, user_timesheet[:timesheets], :start_time)
+        end
+    when 3
+        if user_timesheet[:access_level] == "manager"
+
+        else
+            prompt.error("This option is available to Management only")
+            next
         end
     when 4
         continue = false

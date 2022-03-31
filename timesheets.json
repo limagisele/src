@@ -4,13 +4,7 @@
     "id": 1111,
     "access_level": "standard",
     "timesheets": [
-      {
-        "start_time": "2022-03-30 09:00:00 +1100",
-        "finish_time": "2022-03-30 14:00:00 +1100",
-        "working_hours": 5.0,
-        "leave_type": "Annual",
-        "leave_time": "120"
-      }
+
     ]
   },
   {
@@ -24,11 +18,11 @@
     "access_level": "standard",
     "timesheets": [
       {
-        "start_time": "2022-03-29 09:00:00 +1100",
-        "finish_time": "2022-03-29 14:00:00 +1100",
+        "start_time": "2022-03-29 12:00:00 +1100",
+        "finish_time": "2022-03-29 17:00:00 +1100",
         "working_hours": 5.0,
-        "leave_type": "Sick",
-        "leave_time": "60"
+        "leave_type": "N/A",
+        "leave_time": 0
       },
       {
         "start_time": "2022-03-28 09:00:00 +1100",
@@ -45,25 +39,11 @@
         "leave_time": 120
       },
       {
-        "start_time": "2022-03-31 12:00:00 +1100",
-        "finish_time": "2022-03-31 14:00:00 +1100",
-        "working_hours": 2.0,
-        "leave_type": "Annual",
-        "leave_time": "1.5"
-      },
-      {
-        "start_time": "2022-04-01 08:00:00 +1100",
-        "finish_time": "2022-04-01 15:00:00 +1100",
-        "working_hours": 7.0,
-        "leave_type": "Annual",
-        "leave_time": "60"
-      },
-      {
-        "start_time": "2022-04-02 12:00:00 +1100",
-        "finish_time": "2022-04-02 15:00:00 +1100",
-        "working_hours": 3.0,
-        "leave_type": "Sick",
-        "leave_time": "180.5"
+        "start_time": "2022-03-31 09:00:00 +1100",
+        "finish_time": "2022-03-31 15:00:00 +1100",
+        "working_hours": 6.0,
+        "leave_type": "N/A",
+        "leave_time": 0
       }
     ]
   },
@@ -76,7 +56,7 @@
     ]
   },
   {
-    "name": "matt",
+    "name": "amanda",
     "id": 444,
     "access_level": "manager"
   }

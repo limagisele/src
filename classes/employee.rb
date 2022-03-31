@@ -74,7 +74,7 @@ class Employee
                       end
         system "clear"
         # Ask for user's confirmation on the new timesheet displayed on the terminal
-        Timesheet.display_timesheet(user.name, start_time, finish_time, leave_taken)
+        Timesheet.template(user.name, start_time, finish_time, leave_taken)
         input2 = @@prompt.yes?("Confirm timesheet above?")
         return leave_taken, input2
     end
@@ -84,7 +84,7 @@ class Employee
         user.timesheets << Timesheet.new(start_time, finish_time, leave_taken[0], leave_taken[1])
         yield
         File.write('timesheets.json', JSON.pretty_generate(Timesheet.timesheet_file))
-        puts "Timesheet saved successfully!".bg(:yellow).black
+        puts "\n Timesheet saved successfully! \n".bg(:yellow).black
     end
 
     # Create a new timesheet

@@ -4,18 +4,21 @@ require './classes/employee'
 require './classes/errors'
 require './module/payable_leave'
 
+require 'tty-prompt'
+
 describe Timesheet do
     describe '#date' do
+        let(:prompt) { TTY::Prompt.new }
         it 'returns a valid date from user input' do
-            allow(Timesheet).to receive(:gets).and_return('29/03.2022')
+            allow(Timesheet).to receive(:ask).and_return('29/03.2022')
             expect(Timesheet.date('start date')).to eq Date.parse('2022-03-29')
         end
         it 'returns InvalidDateError if date outside current week' do
-            allow(Timesheet).to receive(:gets).and_return('20/03.2022')
+            allow(Timesheet).to receive(:ask).and_return('20/03.2022')
             expect { Timesheet.date('start date') }.to raise_error(InvalidDateError)
         end
         it 'returns InvalidDateError if user\'s input is not a date' do
-            allow(Timesheet).to receive(:gets).and_return('abcd.hah.hgh')
+            allow(Timesheet).to receive(:ask).and_return('abcd.hah.hgh')
             expect { Timesheet.date('start date') }.to raise_error(InvalidDateError)
         end
     end

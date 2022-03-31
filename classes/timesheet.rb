@@ -60,12 +60,16 @@ class Timesheet
         return time
     end
 
-    def self.display_timesheet(name, start, finish, leave)
-        puts "#{name.capitalize}'s New Timesheet".underline.bg(:antiquewhite).black.bright
-        puts "-" * 40
+    def self.display_timesheet(start, finish, leave)
         puts "Start: #{start.strftime('%d.%m.%Y -> %H:%M').bright.green}"
         puts "Finish: #{finish.strftime('%d.%m.%Y -> %H:%M').bright.green}"
         puts "Leave applied: #{leave[0].bright.green} leave -> #{leave[1].to_s.bright.green} minutes"
+    end
+
+    def self.template(name, start, finish, leave)
+        puts "#{name.capitalize}'s New Timesheet".underline.bg(:antiquewhite).black.bright
+        puts "-" * 40
+        display_timesheet(start, finish, leave)
         puts "-" * 40
     end
 end
