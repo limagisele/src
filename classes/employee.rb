@@ -54,11 +54,7 @@ class Employee
     def self.validate_date
         start_date = Timesheet.date('start date')
         start_time = Timesheet.time(start_date, 'start time')
-        end_date = start_date
-        # end_date = Timesheet.date('end date')
-        # raise(InvalidDateError) if start_date > end_date
-
-        finish_time = Timesheet.time(end_date, 'finish time')
+        finish_time = Timesheet.time(start_date, 'finish time')
         raise(InvalidTimeError) if start_time >= finish_time
 
         return start_time, finish_time
@@ -129,7 +125,7 @@ class Employee
         worker_id = @@prompt.ask("Enter required employee's ID?", required: true).to_i
         worker = find_employee(worker_id)
         worker_timesheet = file.find { |employee| employee[:id] == worker.id }
-        puts "Your are now accessing #{worker.name.capitalize}'s timesheet".black.bg(:antiquewhite)
+        puts "\n You are now accessing #{worker.name.capitalize}'s timesheet \n".black.bg(:antiquewhite)
         yield(worker, worker_timesheet[:timesheets], start_time)
     end
 end
