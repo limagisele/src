@@ -1,0 +1,77 @@
+[
+  {
+    "name": "mary",
+    "id": 1111,
+    "access_level": "standard",
+    "timesheets": [
+      {
+        "name": "mary",
+        "id": 1111,
+        "start_time": "2022-03-29 12:00:00 +1100",
+        "finish_time": "2022-03-29 17:00:00 +1100",
+        "working_hours": 5.0,
+        "leave_type": "N/A",
+        "leave_time": 0
+      }
+    ]
+  },
+  {
+    "name": "sally",
+    "id": 222,
+    "access_level": "standard",
+    "timesheets": [
+      {
+        "name": "sally",
+        "id": 222,
+        "start_time": "2022-03-29 12:00:00 +1100",
+        "finish_time": "2022-03-29 17:00:00 +1100",
+        "working_hours": 5.0,
+        "leave_type": "N/A",
+        "leave_time": 0
+      },
+      { 
+        "name": "sally",
+        "id": 222,
+        "start_time": "2022-03-28 09:00:00 +1100",
+        "finish_time": "2022-03-28 16:00:00 +1100",
+        "working_hours": 7.0,
+        "leave_type": "sick",
+        "leave_time": 60
+      },
+      {
+        "name": "sally",
+        "id": 222,
+        "start_time": "2022-03-30 14:00:00 +1100",
+        "finish_time": "2022-03-30 20:00:00 +1100",
+        "working_hours": 6.0,
+        "leave_type": "sick",
+        "leave_time": 120
+      },
+      {
+        "name": "sally",
+        "id": 222,
+        "start_time": "2022-03-31 09:00:00 +1100",
+        "finish_time": "2022-03-31 15:00:00 +1100",
+        "working_hours": 6.0,
+        "leave_type": "N/A",
+        "leave_time": 0
+      }
+    ]
+  },
+  {
+    "name": "bob",
+    "id": 345,
+    "access_level": "standard",
+    "timesheets": [
+      {
+        "name": "bob",
+        "id": 345,
+        "start_time": "2022-03-29 12:00:00 +1100",
+        "finish_time": "2022-03-29 17:00:00 +1100",
+        "working_hours": 5.0,
+        "leave_type": "N/A",
+        "leave_time": 0
+      }
+    ]
+  }
+]
