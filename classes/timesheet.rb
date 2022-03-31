@@ -16,8 +16,10 @@ class Timesheet
     @@timesheet_file = JSON.load_file('timesheets.json', symbolize_names: true)
     @@prompt = TTY::Prompt.new(interrupt: :exit)
 
-    def initialize(start, finish, leave, time)
+    def initialize(name, id, start, finish, leave, time)
         @timesheet = {
+          name: name,
+          id: id,
           start_time: start,
           finish_time: finish,
           working_hours: (finish - start) / 3600,

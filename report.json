@@ -4,15 +4,7 @@
     "id": 1111,
     "access_level": "standard",
     "timesheets": [
-      {
-        "name": "mary",
-        "id": 1111,
-        "start_time": "2022-03-29 12:00:00 +1100",
-        "finish_time": "2022-03-29 17:00:00 +1100",
-        "working_hours": 5.0,
-        "leave_type": "N/A",
-        "leave_time": 0
-      }
+      
     ]
   },
   {

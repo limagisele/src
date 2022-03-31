@@ -76,8 +76,8 @@ class Employee
     end
 
     # Update user's timesheets in the JSON file
-    def self.save_file(user, start_time, finish_time, leave_taken)
-        user.timesheets << Timesheet.new(start_time, finish_time, leave_taken[0], leave_taken[1])
+    def self.save_file(user, id, start_time, finish_time, leave_taken)
+        user.timesheets << Timesheet.new(user.name, id, start_time, finish_time, leave_taken[0], leave_taken[1])
         yield
         File.write('timesheets.json', JSON.pretty_generate(Timesheet.timesheet_file))
         puts "\n Timesheet saved successfully! \n".bg(:yellow).black
@@ -96,7 +96,7 @@ class Employee
         leave_taken, input2 = add_leave(user, start_time, finish_time)
         return unless input2 == true
 
-        save_file(user, start_time, finish_time, leave_taken) { timesheet << user.timesheets[-1].timesheet }
+        save_file(user, user.id, start_time, finish_time, leave_taken) { timesheet << user.timesheets[-1].timesheet }
     rescue InvalidDateError, InvalidTimeError => e
         @@prompt.error(e.message)
         retry
@@ -115,7 +115,7 @@ class Employee
         leave_taken, input2 = add_leave(user, start_time, finish_time)
         return unless input2 == true
 
-        save_file(user, start_time, finish_time, leave_taken) { timesheet[index] = user.timesheets[-1].timesheet }
+        save_file(user, user.id, start_time, finish_time, leave_taken) { timesheet[index] = user.timesheets[-1].timesheet }
     rescue InvalidDateError, InvalidTimeError => e
         @@prompt.error(e.message)
         retry
