@@ -12,7 +12,7 @@ require './classes/errors'
 class Timesheet
     attr_accessor :timesheet
 
-    @@prompt = TTY::Prompt.new(interrupt: :exit)
+    @prompt = TTY::Prompt.new(interrupt: :exit)
 
     def initialize(name, id, start, finish, leave, time)
         @timesheet = {
@@ -26,14 +26,10 @@ class Timesheet
         }
     end
 
-    def self.timesheet_file
-        return @@timesheet_file
-    end
-
     # Check if date entered is valid and within the current week
     def self.date(period)
         begin
-            input = @@prompt.ask("Enter #{period.underline} (DD.MM.YYY):", required: true)
+            input = @prompt.ask("Enter #{period.underline} (DD.MM.YYY):", required: true)
             date = Date.parse(input)
             raise(InvalidDateError) if date.cweek != Date.today.cweek
         rescue ArgumentError
@@ -54,7 +50,7 @@ class Timesheet
 
     # "08" and "09" cannot be casted to Integer so need to delete prefix "0"
     def self.time_casting(period)
-        input = @@prompt.ask("Enter #{period.underline} (HH:MM - 24H):", required: true).split(/:/)
+        input = @prompt.ask("Enter #{period.underline} (HH:MM - 24H):", required: true).split(/:/)
         new_input = input.map { |number| number.delete_prefix("0") }
         raise(InvalidTimeError) if new_input.include?('.')
 
