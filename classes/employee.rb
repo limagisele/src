@@ -39,7 +39,6 @@ class Employee
             raise(InvalidUserError) if found_employee.nil?
         end
         found_employee = employee
-
         return found_employee
     end
 
