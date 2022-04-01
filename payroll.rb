@@ -48,10 +48,10 @@ while continue
     when 2
         if user_timesheet[:access_level] == "manager"
             Employee.manager_timesheet(file, :start_time) do |worker, timesheet|
-                Employee.update_timesheet(worker, timesheet, :start_time, file)
+                Employee.edit_timesheet(worker, timesheet, :start_time, file)
             end
         else
-            Employee.update_timesheet(user, user_timesheet[:timesheets], :start_time, file)
+            Employee.edit_timesheet(user, user_timesheet[:timesheets], :start_time, file)
         end
     when 3
         if user_timesheet[:access_level] == "manager"

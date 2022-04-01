@@ -102,31 +102,39 @@ class Employee
         @@prompt.error(e.message)
     end
 
-    # Create a new timesheet
+    def self.add_error
+        @@prompt.error("\nTimesheet already exists for this date.")
+        puts "Try a different date or select 'Edit Timesheet'\n".yellow
+    end
+
+    def self.edit_error
+        @@prompt.error("Timesheet does not exist for this date.")
+        puts "Try a different date or select 'Create Timesheet'\n.".yellow
+    end
+
+    # Create new timesheet
     def self.add_timesheet(user, timesheet, timesheet_time, file)
         start_time, finish_time = validate_date
         index = timesheet_index(start_time, timesheet, timesheet_time)
-        unless index.nil?
-            @@prompt.error("\nTimesheet already exists for this date.")
-            puts "Try a different date or select 'Edit Timesheet'\n".yellow
-            return
+        if index.nil?
+            save_file(user, user.id, start_time, finish_time, file) { timesheet << user.timesheets[-1].timesheet }
+        else
+            add_error
         end
-        save_file(user, user.id, start_time, finish_time, file) { timesheet << user.timesheets[-1].timesheet }
     rescue InvalidDateError, InvalidTimeError => e
         @@prompt.error(e.message)
         retry
     end
 
-    # Update an existing timesheet
-    def self.update_timesheet(user, timesheet, timesheet_time, file)
+    # Edit an existing timesheet
+    def self.edit_timesheet(user, timesheet, timesheet_time, file)
         start_time, finish_time = validate_date
         index = timesheet_index(start_time, timesheet, timesheet_time)
         if index.nil?
-            @@prompt.error("Timesheet does not exist for this date.")
-            @@promp.say("Try a different date or select 'Create Timesheet' on the menu below.")
-            return
+            edit_error
+        else
+            save_file(user, user.id, start_time, finish_time, file) { timesheet[index] = user.timesheets[-1].timesheet }
         end
-        save_file(user, user.id, start_time, finish_time, file) { timesheet[index] = user.timesheets[-1].timesheet }
     rescue InvalidDateError, InvalidTimeError => e
         @@prompt.error(e.message)
         retry
