@@ -30,6 +30,19 @@ class Employee
         return @@list_of_employees
     end
 
+    def self.signin
+        user_id = @@prompt.ask("What's your employee ID?", required: true).to_i
+        user_code = @@prompt.mask("Enter your password:", required: true)
+        user = find_employee(user_id, user_code)
+        system "clear"
+        puts "\n Hello, #{user.name}! \n".black.bg(:antiquewhite)
+        return user
+    rescue InvalidUserError => e
+        system "clear"
+        @@prompt.error(e.message)
+        retry
+    end
+
     # Find an employee with ID and password matching
     # Managers don't require employees' password to access their timesheets
     def self.find_employee(id, password = nil)
@@ -84,6 +97,8 @@ class Employee
         yield
         File.write('json_files/timesheets.json', JSON.pretty_generate(file))
         puts "\n Timesheet saved successfully! \n".bg(:yellow).black
+    rescue FileError => e
+        @@prompt.error(e.message)
     end
 
     # Create a new timesheet

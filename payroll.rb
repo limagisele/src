@@ -12,25 +12,15 @@ require './classes/report'
 require './classes/errors'
 require './module/payable_leave'
 
+prompt = TTY::Prompt.new(interrupt: :exit)
+
 # Upload employees json file and create instances of Employee
 employees = JSON.load_file('json_files/employees.json', symbolize_names: true)
 employees.each { |person| Employee.list_of_employees << Employee.new(person[:name], person[:id], person[:password]) }
 
-prompt = TTY::Prompt.new(interrupt: :exit)
-
 puts "\n Welcome to the Alternative Payroll Program \n".blue.bright.underline
 # User signin
-begin
-    user_id = prompt.ask("What's your employee ID?", required: true).to_i
-    user_code = prompt.mask("Enter your password:", required: true)
-    user = Employee.find_employee(user_id, user_code)
-rescue InvalidUserError => e
-    system "clear"
-    prompt.error(e.message)
-    retry
-end
-system "clear"
-puts "\n Hello, #{user.name}! \n".black.bg(:antiquewhite)
+user = Employee.signin
 
 continue = true
 while continue
@@ -41,7 +31,6 @@ while continue
 
     option = prompt.select("What would you like to do?") do |menu|
         menu.enum "."
-
         menu.choice "Create Timesheet", 1
         menu.choice "Edit Timesheet", 2
         menu.choice "Access Manager's Options", 3

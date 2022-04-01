@@ -18,3 +18,10 @@ class InvalidTimeError < StandardError
         return "Time entered is not valid!"
     end
 end
+
+# Error raised if file cannot be uploaded or created
+class FileError < StandardError
+    def message
+        return "File could not be loaded/created!"
+    end
+end

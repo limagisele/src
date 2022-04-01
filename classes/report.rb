@@ -33,7 +33,8 @@ class Report
             File.write('json_files/timesheets.json', JSON.pretty_generate(employee_file))
             puts "\n Timesheet file is now ready for a new payroll cycle! \n".bg(:yellow).black
         end
-        return
+    rescue FileError => e
+        @@prompt.error(e.message)
     end
 
     # Generate csv file with all timesheets created and saved
@@ -46,5 +47,7 @@ class Report
             end
         end
         puts "\n File 'report.csv' created successfully! \n".bg(:yellow).black
+    rescue FileError => e
+        @@prompt.error(e.message)
     end
 end

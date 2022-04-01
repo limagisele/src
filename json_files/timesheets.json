@@ -45,7 +45,15 @@
     "id": 4444,
     "access_level": "standard",
     "timesheets": [
-
+      {
+        "name": "Haylee Erickson",
+        "id": 4444,
+        "start_time": "2022-03-30 07:00:00 +1100",
+        "finish_time": "2022-03-30 12:00:00 +1100",
+        "working_hours": 5.0,
+        "leave_type": "N/A",
+        "leave_time": 0
+      }
     ]
   },
   {
