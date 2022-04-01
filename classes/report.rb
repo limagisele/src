@@ -39,7 +39,7 @@ class Report
 
     # Generate csv file with all timesheets created and saved
     def self.generate_csv(file)
-        CSV.open('report.csv', 'a', headers: headers, write_headers: true) do |csv|
+        CSV.open('report.csv', 'w', headers: headers, write_headers: true) do |csv|
             file.each do |hash|
                 hash[:timesheets].each do |hash2|
                     csv << hash2.values
