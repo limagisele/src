@@ -43,6 +43,16 @@ class Timesheet
         return date
     end
 
+    # Validate date and time entered by the user
+    def self.validate_date
+        start_date = date('start date')
+        start_time = time(start_date, 'start time')
+        finish_time = time(start_date, 'finish time')
+        raise(InvalidTimeError) if start_time >= finish_time
+
+        return start_time, finish_time
+    end
+
     # "08" and "09" cannot be casted to Integer so need to delete prefix "0"
     def self.time_casting(period)
         input = @@prompt.ask("Enter #{period.underline} (HH:MM - 24H):", required: true).split(/:/)

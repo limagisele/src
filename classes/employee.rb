@@ -30,6 +30,19 @@ class Employee
         return @@list_of_employees
     end
 
+    # Find an employee with ID and password matching
+    # Managers don't require employees' password to access their timesheets
+    def self.find_employee(id, password = nil)
+        employee = @@list_of_employees.find { |person| person.id == id }
+        unless password.nil?
+            found_employee = employee if employee.password == password
+            raise(InvalidUserError) if found_employee.nil?
+        end
+        found_employee = employee
+
+        return found_employee
+    end
+
     # Validate user ID and password
     def self.signin
         user_id = @@prompt.ask("What's your employee ID?", required: true).to_i
@@ -44,34 +57,11 @@ class Employee
         retry
     end
 
-    # Find an employee with ID and password matching
-    # Managers don't require employees' password to access their timesheets
-    def self.find_employee(id, password = nil)
-        employee = @@list_of_employees.find { |person| person.id == id }
-        unless password.nil?
-            found_employee = employee if employee.password == password
-            raise(InvalidUserError) if found_employee.nil?
-        end
-        found_employee = employee
-
-        return found_employee
-    end
-
     # Identify if timesheet already exists and return its index position
     def self.timesheet_index(user_time, timesheet, timesheet_time)
         day = user_time.day.to_s
         index = timesheet.find_index { |elem| elem[timesheet_time][8..9].delete_prefix("0") == day }
         return index
-    end
-
-    # Validate date and time entered by the user
-    def self.validate_date
-        start_date = Timesheet.date('start date')
-        start_time = Timesheet.time(start_date, 'start time')
-        finish_time = Timesheet.time(start_date, 'finish time')
-        raise(InvalidTimeError) if start_time >= finish_time
-
-        return start_time, finish_time
     end
 
     # Add leave into timesheet
@@ -102,42 +92,32 @@ class Employee
         @@prompt.error(e.message)
     end
 
-    def self.add_error
-        @@prompt.error("\nTimesheet already exists for this date.")
-        puts "Try a different date or select 'Edit Timesheet'\n".yellow
-    end
-
-    def self.edit_error
-        @@prompt.error("Timesheet does not exist for this date.")
-        puts "Try a different date or select 'Create Timesheet'\n.".yellow
-    end
-
     # Create new timesheet
     def self.add_timesheet(user, timesheet, timesheet_time, file)
-        start_time, finish_time = validate_date
+        start_time, finish_time = Timesheet.validate_date
         index = timesheet_index(start_time, timesheet, timesheet_time)
-        if index.nil?
-            save_file(user, user.id, start_time, finish_time, file) { timesheet << user.timesheets[-1].timesheet }
-        else
-            add_error
-        end
+        raise(AddTimesheetError) unless index.nil?
+
+        save_file(user, user.id, start_time, finish_time, file) { timesheet << user.timesheets[-1].timesheet }
     rescue InvalidDateError, InvalidTimeError => e
         @@prompt.error(e.message)
         retry
+    rescue AddTimesheetError => e
+        @@prompt.error(e.message)
     end
 
     # Edit an existing timesheet
     def self.edit_timesheet(user, timesheet, timesheet_time, file)
-        start_time, finish_time = validate_date
+        start_time, finish_time = Timesheet.validate_date
         index = timesheet_index(start_time, timesheet, timesheet_time)
-        if index.nil?
-            edit_error
-        else
-            save_file(user, user.id, start_time, finish_time, file) { timesheet[index] = user.timesheets[-1].timesheet }
-        end
+        raise(EditTimesheetError) if index.nil?
+
+        save_file(user, user.id, start_time, finish_time, file) { timesheet[index] = user.timesheets[-1].timesheet }
     rescue InvalidDateError, InvalidTimeError => e
         @@prompt.error(e.message)
         retry
+    rescue EditTimesheetError => e
+        @@prompt.error(e.message)
     end
 
     # Give a manager access to any timesheet in the file, for any employee
