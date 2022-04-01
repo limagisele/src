@@ -1,0 +1,85 @@
+[
+  {
+    "name": "Mary Ross",
+    "id": 54367,
+    "access_level": "standard",
+    "timesheets": [
+      {
+        "name": "Mary Ross",
+        "id": 54367,
+        "start_time": "2022-03-28 06:00:00 +1100",
+        "finish_time": "2022-03-28 13:00:00 +1100",
+        "working_hours": 7.0,
+        "leave_type": "Annual",
+        "leave_time": "60"
+      },
+      {
+        "name": "Mary Ross",
+        "id": 54367,
+        "start_time": "2022-03-29 08:00:00 +1100",
+        "finish_time": "2022-03-29 16:00:00 +1100",
+        "working_hours": 8.0,
+        "leave_type": "Annual",
+        "leave_time": "60"
+      },
+      {
+        "name": "Mary Ross",
+        "id": 54367,
+        "start_time": "2022-03-30 09:00:00 +1100",
+        "finish_time": "2022-03-30 15:00:00 +1100",
+        "working_hours": 6.0,
+        "leave_type": "Annual",
+        "leave_time": "120"
+      }
+    ]
+  },
+  {
+    "name": "Anna Patton",
+    "id": 16756,
+    "access_level": "manager",
+    "timesheets": [
+
+    ]
+  },
+  {
+    "name": "Kate Holmes",
+    "id": 23890,
+    "access_level": "standard",
+    "timesheets": [
+      {
+        "name": "Kate Holmes",
+        "id": 23890,
+        "start_time": "2022-03-29 09:00:00 +1100",
+        "finish_time": "2022-03-29 14:00:00 +1100",
+        "working_hours": 5.0,
+        "leave_type": "Annual",
+        "leave_time": "120"
+      },
+      {
+        "name": "Kate Holmes",
+        "id": 23890,
+        "start_time": "2022-03-30 05:00:00 +1100",
+        "finish_time": "2022-03-30 12:00:00 +1100",
+        "working_hours": 7.0,
+        "leave_type": "N/A",
+        "leave_time": 0
+      }
+    ]
+  },
+  {
+    "name": "Haylee Erickson",
+    "id": 37823,
+    "access_level": "standard",
+    "timesheets": [
+
+    ]
+  },
+  {
+    "name": "Amanda Smith",
+    "id": 11567,
+    "access_level": "manager",
+    "timesheets": [
+
+    ]
+  }
+]

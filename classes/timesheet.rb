@@ -13,7 +13,6 @@ require './classes/errors'
 class Timesheet
     attr_accessor :timesheet
 
-    @@timesheet_file = JSON.load_file('timesheets.json', symbolize_names: true)
     @@prompt = TTY::Prompt.new(interrupt: :exit)
 
     def initialize(name, id, start, finish, leave, time)
@@ -69,7 +68,7 @@ class Timesheet
     end
 
     def self.template(name, start, finish, leave)
-        puts "#{name.capitalize}'s New Timesheet".underline.bg(:antiquewhite).black.bright
+        puts "#{name}'s New Timesheet".underline.bg(:antiquewhite).black.bright
         puts "-" * 40
         display_timesheet(start, finish, leave)
         puts "-" * 40

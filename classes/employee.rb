@@ -76,15 +76,18 @@ class Employee
     end
 
     # Update user's timesheets in the JSON file
-    def self.save_file(user, id, start_time, finish_time, leave_taken)
+    def self.update_array(user, id, start_time, finish_time, leave_taken)
         user.timesheets << Timesheet.new(user.name, id, start_time, finish_time, leave_taken[0], leave_taken[1])
         yield
-        File.write('timesheets.json', JSON.pretty_generate(Timesheet.timesheet_file))
+    end
+
+    def self.save_file(file)
+        File.write('json_files/timesheets.json', JSON.pretty_generate(file))
         puts "\n Timesheet saved successfully! \n".bg(:yellow).black
     end
 
     # Create a new timesheet
-    def self.add_timesheet(user, timesheet, timesheet_time)
+    def self.add_timesheet(user, timesheet, timesheet_time, file)
         start_time, finish_time = validate_date
         index = timesheet_index(start_time, timesheet, timesheet_time)
         unless index.nil?
@@ -96,14 +99,15 @@ class Employee
         leave_taken, input2 = add_leave(user, start_time, finish_time)
         return unless input2 == true
 
-        save_file(user, user.id, start_time, finish_time, leave_taken) { timesheet << user.timesheets[-1].timesheet }
+        update_array(user, user.id, start_time, finish_time, leave_taken) { timesheet << user.timesheets[-1].timesheet }
+        save_file(file)
     rescue InvalidDateError, InvalidTimeError => e
         @@prompt.error(e.message)
         retry
     end
 
     # Update an existing timesheet
-    def self.update_timesheet(user, timesheet, timesheet_time)
+    def self.update_timesheet(user, timesheet, timesheet_time, file)
         start_time, finish_time = validate_date
         index = timesheet_index(start_time, timesheet, timesheet_time)
         if index.nil?
@@ -115,7 +119,8 @@ class Employee
         leave_taken, input2 = add_leave(user, start_time, finish_time)
         return unless input2 == true
 
-        save_file(user, user.id, start_time, finish_time, leave_taken) { timesheet[index] = user.timesheets[-1].timesheet }
+        update_array(user, user.id, start_time, finish_time, leave_taken) { timesheet[index] = user.timesheets[-1].timesheet }
+        save_file(file)
     rescue InvalidDateError, InvalidTimeError => e
         @@prompt.error(e.message)
         retry
@@ -125,7 +130,7 @@ class Employee
         worker_id = @@prompt.ask("Enter required employee's ID?", required: true).to_i
         worker = find_employee(worker_id)
         worker_timesheet = file.find { |employee| employee[:id] == worker.id }
-        puts "\n You are now accessing #{worker.name.capitalize}'s timesheet \n".black.bg(:antiquewhite)
+        puts "\n You are now accessing #{worker.name}'s timesheet \n".black.bg(:antiquewhite)
         yield(worker, worker_timesheet[:timesheets], start_time)
     end
 end
