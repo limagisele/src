@@ -68,7 +68,7 @@ class Timesheet
     end
 
     def self.template(name, start, finish, leave)
-        puts "#{name}'s New Timesheet".underline.bg(:antiquewhite).black.bright
+        puts " #{name}'s New Timesheet ".underline.bg(:antiquewhite).black
         puts "-" * 40
         display_timesheet(start, finish, leave)
         puts "-" * 40

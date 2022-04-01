@@ -91,8 +91,8 @@ class Employee
         start_time, finish_time = validate_date
         index = timesheet_index(start_time, timesheet, timesheet_time)
         unless index.nil?
-            @@prompt.error("Timesheet already exists for this date.")
-            @@prompt.say("Try a different date or select 'Edit Timesheet' on the menu below.")
+            @@prompt.error("\nTimesheet already exists for this date.")
+            puts "Try a different date or select 'Edit Timesheet'\n".yellow
             return
         end
 
