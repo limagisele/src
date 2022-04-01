@@ -38,6 +38,7 @@ class Report
     end
 
     # Generate csv file with all timesheets created and saved
+    # It will overwrite current file
     def self.generate_csv(file)
         CSV.open('report.csv', 'w', headers: headers, write_headers: true) do |csv|
             file.each do |hash|

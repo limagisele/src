@@ -30,6 +30,7 @@ class Employee
         return @@list_of_employees
     end
 
+    # Validate user ID and password
     def self.signin
         user_id = @@prompt.ask("What's your employee ID?", required: true).to_i
         user_code = @@prompt.mask("Enter your password:", required: true)
@@ -131,6 +132,7 @@ class Employee
         retry
     end
 
+    # Give a manager access to any timesheet in the file, for any employee
     def self.manager_timesheet(file, start_time)
         worker_id = @@prompt.ask("Enter required employee's ID?", required: true).to_i
         worker = find_employee(worker_id)

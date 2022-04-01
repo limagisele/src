@@ -31,6 +31,7 @@ class Timesheet
         return @@timesheet_file
     end
 
+    # Check if date entered is valid and within the current week
     def self.date(period)
         begin
             input = @@prompt.ask("Enter #{period.underline} (DD.MM.YYY):", required: true)
@@ -42,15 +43,16 @@ class Timesheet
         return date
     end
 
+    # "08" and "09" cannot be casted to Integer so need to delete prefix "0"
     def self.time_casting(period)
         input = @@prompt.ask("Enter #{period.underline} (HH:MM - 24H):", required: true).split(/:/)
-        # "08" and "09" cannot be casted to Integer so need to delete prefix "0"
         new_input = input.map { |number| number.delete_prefix("0") }
         raise(InvalidTimeError) if new_input.include?('.')
 
         return new_input
     end
 
+    # Get star and finish times from the user
     def self.time(date, period)
         begin
             input = time_casting(period)
@@ -67,6 +69,7 @@ class Timesheet
         puts "Leave applied: #{leave[0].bright.green} leave -> #{leave[1].to_s.bright.green} minutes"
     end
 
+    # Show created timesheet to the user for confirmation
     def self.template(name, start, finish, leave)
         puts " #{name}'s New Timesheet ".underline.bg(:antiquewhite).black
         puts "-" * 40
