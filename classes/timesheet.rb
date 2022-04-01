@@ -1,7 +1,6 @@
 require 'date'
 require 'time'
 require 'json'
-require 'csv'
 require 'tty-prompt'
 require 'rainbow/refinement'
 using Rainbow

@@ -1,5 +1,3 @@
-require 'date'
-require 'time'
 require 'json'
 require 'csv'
 require 'tty-prompt'
@@ -34,11 +32,14 @@ class Employee
     # Managers don't require employees' password to access their timesheets
     def self.find_employee(id, password = nil)
         employee = @@list_of_employees.find { |person| person.id == id }
-        unless password.nil?
+        raise(InvalidUserError) if employee.nil?
+
+        if password.nil?
+            found_employee = employee
+        else
             found_employee = employee if employee.password == password
             raise(InvalidUserError) if found_employee.nil?
         end
-        found_employee = employee
         return found_employee
     end
 
@@ -126,5 +127,9 @@ class Employee
         worker_timesheet = file.find { |employee| employee[:id] == worker.id }
         puts "\n You are now accessing #{worker.name}'s timesheet \n".black.bg(:antiquewhite)
         yield(worker, worker_timesheet[:timesheets], start_time)
+    rescue InvalidUserError => e
+        system "clear"
+        @@prompt.error(e.message)
+        retry
     end
 end

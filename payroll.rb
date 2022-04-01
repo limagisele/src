@@ -1,16 +1,10 @@
-require 'date'
-require 'time'
 require 'json'
-require 'csv'
 require 'tty-prompt'
 require 'rainbow/refinement'
 using Rainbow
 
-require './classes/timesheet'
 require './classes/employee'
 require './classes/report'
-require './classes/errors'
-require './module/payable_leave'
 
 prompt = TTY::Prompt.new(interrupt: :exit)
 

@@ -54,6 +54,15 @@
         "working_hours": 9.0,
         "leave_type": "N/A",
         "leave_time": 0
+      },
+      {
+        "name": "Kate Holmes",
+        "id": 3333,
+        "start_time": "2022-03-29 06:00:00 +1100",
+        "finish_time": "2022-03-29 13:00:00 +1100",
+        "working_hours": 7.0,
+        "leave_type": "Sick",
+        "leave_time": "60"
       }
     ]
   },
