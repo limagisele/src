@@ -76,12 +76,12 @@ class Employee
     end
 
     # Update user's timesheets in the JSON file
-    def self.update_array(user, id, start_time, finish_time, leave_taken)
+    def self.save_file(user, id, start_time, finish_time, file)
+        leave_taken, input2 = add_leave(user, start_time, finish_time)
+        return unless input2 == true
+
         user.timesheets << Timesheet.new(user.name, id, start_time, finish_time, leave_taken[0], leave_taken[1])
         yield
-    end
-
-    def self.save_file(file)
         File.write('json_files/timesheets.json', JSON.pretty_generate(file))
         puts "\n Timesheet saved successfully! \n".bg(:yellow).black
     end
@@ -95,12 +95,7 @@ class Employee
             puts "Try a different date or select 'Edit Timesheet'\n".yellow
             return
         end
-
-        leave_taken, input2 = add_leave(user, start_time, finish_time)
-        return unless input2 == true
-
-        update_array(user, user.id, start_time, finish_time, leave_taken) { timesheet << user.timesheets[-1].timesheet }
-        save_file(file)
+        save_file(user, user.id, start_time, finish_time, file) { timesheet << user.timesheets[-1].timesheet }
     rescue InvalidDateError, InvalidTimeError => e
         @@prompt.error(e.message)
         retry
@@ -115,12 +110,7 @@ class Employee
             @@promp.say("Try a different date or select 'Create Timesheet' on the menu below.")
             return
         end
-
-        leave_taken, input2 = add_leave(user, start_time, finish_time)
-        return unless input2 == true
-
-        update_array(user, user.id, start_time, finish_time, leave_taken) { timesheet[index] = user.timesheets[-1].timesheet }
-        save_file(file)
+        save_file(user, user.id, start_time, finish_time, file) { timesheet[index] = user.timesheets[-1].timesheet }
     rescue InvalidDateError, InvalidTimeError => e
         @@prompt.error(e.message)
         retry

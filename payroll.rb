@@ -15,7 +15,9 @@ require './module/payable_leave'
 # Upload employees json file and create instances of Employee
 employees = JSON.load_file('json_files/employees.json', symbolize_names: true)
 employees.each { |person| Employee.list_of_employees << Employee.new(person[:name], person[:id], person[:password]) }
+
 prompt = TTY::Prompt.new(interrupt: :exit)
+
 puts "\n Welcome to the Alternative Payroll Program \n".blue.bright.underline
 # User signin
 begin
@@ -33,14 +35,16 @@ puts "\n Hello, #{user.name}! \n".black.bg(:antiquewhite)
 continue = true
 while continue
     # Locate employee's timesheets in the file and reload it
+    # Required so a timesheet can be created and edited while the program si still running
     file = JSON.load_file('json_files/timesheets.json', symbolize_names: true)
     user_timesheet = file.find { |employee| employee[:id] == user.id }
+
     option = prompt.select("What would you like to do?") do |menu|
         menu.enum "."
 
         menu.choice "Create Timesheet", 1
         menu.choice "Edit Timesheet", 2
-        menu.choice "Generate manager's report", 3
+        menu.choice "Access Manager's Options", 3
         menu.choice "Exit", 4
     end
     case option
@@ -62,10 +66,12 @@ while continue
         end
     when 3
         if user_timesheet[:access_level] == "manager"
-            input = prompt.yes?("Generate payroll report?")
-            if input == true
+            input = prompt.select("Select your option:", ["Create Payroll Report", "RESET Timesheet File"])
+            case input
+            when "Create Payroll Report"
                 Report.generate_csv(file)
-                puts "\n File 'report.csv' created successfully! \n".bg(:yellow).black
+            when "RESET Timesheet File"
+                Report.generate_json
             end
         else
             prompt.error("\nThis option is available to Management only\n")

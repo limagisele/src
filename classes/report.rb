@@ -14,6 +14,7 @@ require './module/payable_leave'
 class Report
     @@employee_file = JSON.load_file('json_files/employees.json', symbolize_names: true)
     @@headers = ["Name", "ID", "Clock-In", "Clock-Out", "Working Hours", "Leave Applied", "Leave Minutes"]
+    @@prompt = TTY::Prompt.new(interrupt: :exit)
 
     def self.employee_file
         return @@employee_file
@@ -26,8 +27,13 @@ class Report
     # New timesheet file needs to be generated at start of every week (new payroll)
     # It will overwrite current file
     def self.generate_json
-        employee_file.each { |employee| employee.delete(:password) }
-        File.write('json_files/timesheets.json', JSON.pretty_generate(timesheet_file))
+        input = @@prompt.yes?("This will erase all current saved timesheets. Proceed?")
+        if input == true
+            employee_file.each { |employee| employee.delete(:password) }
+            File.write('json_files/timesheets.json', JSON.pretty_generate(employee_file))
+            puts "\n Timesheet file is now ready for a new payroll cycle! \n".bg(:yellow).black
+        end
+        return
     end
 
     # Generate csv file with all timesheets created and saved
@@ -39,5 +45,6 @@ class Report
                 end
             end
         end
+        puts "\n File 'report.csv' created successfully! \n".bg(:yellow).black
     end
 end
