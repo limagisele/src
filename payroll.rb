@@ -62,9 +62,13 @@ while continue
         end
     when 3
         if user_timesheet[:access_level] == "manager"
-
+            input = prompt.yes?("Generate payroll report?")
+            if input == true
+                Report.generate_csv(file)
+                puts "\n File 'report.csv' created successfully! \n".bg(:yellow).black
+            end
         else
-            prompt.error("This option is available to Management only")
+            prompt.error("\nThis option is available to Management only\n")
             next
         end
     when 4
