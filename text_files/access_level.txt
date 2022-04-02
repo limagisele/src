@@ -1,0 +1,11 @@
+
+Standard Access  
+  1. Create Timesheet: Users can only view and create their own timesheet.
+  2. Edit Timesheet: Users can only edit an existing timesheet of their own.
+  3. Access Manager's Options (Not Applicable for Standard Access)
+
+Management Access  
+  1. Create Timesheet: User can create timesheets for ANY employee included in the list of employees.  
+  2. Edit Timesheet: Users can edit timesheets for ANY employee included in the list of employees.
+  3. Access Manager's Options: Available to managers only due to employees' privacy and data integrity.
+

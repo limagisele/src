@@ -9,16 +9,25 @@ require './classes/employee'
 require './classes/report'
 
 # Add command line arguments
-if ARGV.include?('-g') || ARGV.include?('--gems')
-    File.foreach('Gemfile') do |line|
-        puts line unless line.include?('#')
+begin
+    if ARGV.include?('-g') || ARGV.include?('--gems')
+        File.foreach('Gemfile') do |line|
+            puts line unless line.include?('#')
+        end
+        return
+    elsif ARGV.include?('-h') || ARGV.include?("--help")
+        file = File.open('text_files/help.txt')
+        data = file.read
+        puts data
+        return
+    elsif ARGV.include?('-a') || ARGV.include?("--access")
+        file = File.open('text_files/access_level.txt')
+        data = file.read
+        puts data
+        return
     end
-    return
-elsif ARGV.include?('-h') || ARGV.include?("--help")
-    file = File.open('text_files/help.txt')
-    data = file.read
-    puts data
-    return
+rescue FileError => e
+        @prompt.error(e.message)
 end
 
 # Create instance to use tty-prompt

@@ -86,15 +86,15 @@ As soon as the program starts it asks for an employee ID and a password. Once th
   1. Create Timesheet  
     This function allows the user to create timesheets for any employee included in the list of employees.  
     Once this option is selected, it prompts the user which employee they want to access by asking for the employee's ID.  
-    After employee required is found, the program will follow the same steps of creating a timesheet as per explained in the standard level.
+    After employee required is found, the program will follow the standard steps of creating a timesheet.
   2. Edit Timesheet  
    Here users can edit timesheets for any employee included in the list of employees.  
    Similarly to the create option, the manager will be asked for the employee ID who needs to have the timesheet altered.  
    When employee is found, the program will follow the standard steps of editing a timesheet.
   3. Access Manager's Options  
    It displays a menu with two options:
-      * Create Payroll Report
-      * RESET Timesheet File
+      * Create Payroll Report - A confirmation will be prompted before proceeding. If typed 'yes', a csv file will be saved as `report.csv`
+      * RESET Timesheet File - It has the power to erase the `timesheets.json` file so a confirmation will be asked before proceeding. If 'yes' is selected a blank file will be ready to be used at the start of a next pay cycle.
   4. Exit
 
 #### CLI Arguments
@@ -103,7 +103,8 @@ Some Command Line Arguments are available at the terminal window by running the 
 
 The arguments used here are:
 
-`-h` or `--help` -> Access help documentation  
+`-a` or `--access` -> List an overview of each type of access level  
+`-h` or `--help` -> Access help documentation for data entry  
 `-g` or `--gems` -> Output list of gems required
 
 #### Dependencies
