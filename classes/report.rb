@@ -10,7 +10,7 @@ require './classes/errors'
 class Report
     @employee_file = JSON.load_file('json_files/employees.json', symbolize_names: true)
     @headers = ["Name", "ID", "Clock-In", "Clock-Out", "Working Hours", "Leave Applied", "Leave Minutes"]
-    @prompt = TTY::Prompt.new(interrupt: :exit)
+    @prompt = TTY::Prompt.new(interrupt: :signal)
 
     def self.employee_file
         return @employee_file
