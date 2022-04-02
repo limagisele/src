@@ -12,7 +12,7 @@ require './classes/errors'
 class Timesheet
     attr_accessor :timesheet
 
-    @prompt = TTY::Prompt.new(interrupt: :exit)
+    @prompt = TTY::Prompt.new(interrupt: :signal)
 
     def initialize(name, id, start, finish, leave, time)
         @timesheet = {

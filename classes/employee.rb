@@ -14,7 +14,7 @@ class Employee
     attr_accessor :timesheets
 
     @list_of_employees = []
-    @prompt = TTY::Prompt.new(interrupt: :exit)
+    @prompt = TTY::Prompt.new(interrupt: :signal)
 
     def initialize(name, id, password)
         @name = name
