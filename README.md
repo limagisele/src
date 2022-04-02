@@ -1,34 +1,39 @@
 ## Alternative Payroll App
 
-#### Purpose
+#### Description
 ___
 This terminal application was created using Ruby language with the purpose of utilising a range of developer tools, going through the processes of conceptualising, designing, planning, testing and implementing the application.
 
 #### Table of Content
 ____
-1. [Description]()
-2. [Features]()
+1. [Purpose](https://github.com/limagisele/terminal-app#description)
+2. [Features](https://github.com/limagisele/terminal-app#features)
    1. asas
    2. asas
    3. asas
    4. adasd
-3. [Documentation]()  
+3. [Documentation](https://github.com/limagisele/terminal-app#documentation)  
     1. GitHub Repo  
     2. Kanban Board
     3. Code Style Guide
-4. [Installation]()
+4. [Installation](https://github.com/limagisele/terminal-app#installation)
    1. Step 1
    2. Step 2
-5. [Usage]()
+5. [Usage](https://github.com/limagisele/terminal-app#usage)
    1. Standard access
    2. Management access
-6. [CLI Arguments]()
-7. [Dependencies]()
-8. [System requirements]()
+6. [CLI Arguments](https://github.com/limagisele/terminal-app#cli-arguments)
+7. [Dependencies](https://github.com/limagisele/terminal-app#dependencies)
+8. [System requirements](https://github.com/limagisele/terminal-app#system-requirements)
 
-#### Description
+#### Purpose
 ____
+Some companies can struggle to log working hours of their employees when their payroll management software goes out of action for a long period of time, as exemplified in this recent incident here: [Payroll disruption news](https://www.afr.com/work-and-careers/workplace/kronos-hack-creates-employer-nightmare-over-christmas-pay-20211215-p59ht6).  
 
+From that experience, it came the idea to create a simple program that can allow employees to log their working hours independently and managers to generate weekly payroll reports automatically to be sent for payment processing, without the need to record hours on paper timecards or using spreadsheets.
+
+Reference:  
+Marin-Guzman, D. (2021). *Kronos hack creates employer ‘nightmare’ over Christmas pay*. [online] Australian Financial Review. Available at: https://www.afr.com/work-and-careers/workplace/kronos-hack-creates-employer-nightmare-over-christmas-pay-20211215-p59ht6 [Accessed 2 Apr. 2022].
 
 #### Features
 ____
@@ -42,7 +47,7 @@ ____
 * [Code Style](https://rubystyle.guide/)
   * The source code contained here adheres to The Ruby Style Guide.
   * Reference:  
-  The Ruby Style Guide. (2022). The Ruby Style Guide. [online] Available at: https://rubystyle.guide/ [Accessed 29 Mar. 2022].
+  The Ruby Style Guide. (2022). *The Ruby Style Guide*. [online] Available at: https://rubystyle.guide/ [Accessed 29 Mar. 2022].
 
 #### Installation
 ____
@@ -57,6 +62,12 @@ ____
 
 #### CLI Arguments
 ____
+Some Command Line Arguments are available at the terminal window by running the command `ruby payroll.rb [argument]`.  
+
+The arguments used here are:
+
+`-h` or `--help` -> Access help documentation  
+`-g` or `--gems` -> Output list of gems required
 
 #### Dependencies
 ____
