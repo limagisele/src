@@ -26,15 +26,15 @@ ____
 7. [Dependencies]()
 8. [System requirements]()
 
-#### 1. Purpose
+#### Description
 ____
 
 
-#### 2. Features
+#### Features
 ____
 
 
-#### 3. Documentation
+#### Documentation
 ____
 * [GitHub Repo](https://github.com/limagisele/xxx)
 * [Kanban Board](https://trello.com/b/wF75LZtz/alternative-payroll)  
@@ -44,7 +44,7 @@ ____
   * Reference:  
   The Ruby Style Guide. (2022). The Ruby Style Guide. [online] Available at: https://rubystyle.guide/ [Accessed 29 Mar. 2022].
 
-#### 4. Installation
+#### Installation
 ____
 1. Download this [zip file](https://github.com/limagisele/terminal-app/archive/refs/heads/master.zip) from the GitHub repository
 2. Unzip the file
@@ -52,13 +52,13 @@ ____
 4. If you **don't** have Bundler set up yet, open a terminal window and run the command `gem install bundler`. *If you already do, please skip this step as it only needs to be done once.*
 5. In the terminal, go to the directory where the folder is and run the command `./run_app.sh` to install all required gems and start the program.
 
-#### 5. Usage
+#### Usage
 ____
 
-#### 6. CLI Arguments
+#### CLI Arguments
 ____
 
-#### 7. Dependencies
+#### Dependencies
 ____
 In order to run and test this application successfully, it requires all the gems listed below to be installed.  
 However, if you initiate the program by following the [Installation Steps]() you don't need to worry about installing gems manually and they will be all set and ready to go for you.
@@ -83,7 +83,7 @@ gem "json"
 gem "time"
 ```
 
-#### 8. System Requirements
+#### System Requirements
 ____
 This program runs in any operating system. However it is worth mentioning that the gem `tty-promp` has some limitations on the `select` function when running from Git Bash. The function mentioned is used in this app uses for displaying menu options.
 If you require more information about the limitation above, please check the [TTY-prompt README.md](https://github.com/piotrmurach/tty-prompt#windows-support).
