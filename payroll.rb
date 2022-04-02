@@ -8,6 +8,20 @@ using Rainbow
 require './classes/employee'
 require './classes/report'
 
+# Add command line arguments
+if ARGV.include?('-g') || ARGV.include?('--gems')
+    File.foreach('Gemfile') do |line|
+        puts line unless line.include?('#')
+    end
+    return
+elsif ARGV.include?('-h') || ARGV.include?("--help")
+    file = File.open('text_files/help.txt')
+    data = file.read
+    puts data
+    return
+end
+
+# Create instance to use tty-prompt
 prompt = TTY::Prompt.new(interrupt: :signal)
 
 # Upload employees json file and create instances of Employee
