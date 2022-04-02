@@ -27,6 +27,14 @@ class Employee
         return @list_of_employees
     end
 
+    # Upload employees json file and create instances of Employee
+    def self.upload_employees
+        employees = JSON.load_file('json_files/employees.json', symbolize_names: true)
+        employees.each { |person| list_of_employees << Employee.new(person[:name], person[:id], person[:password]) }
+    rescue FileError => e
+        @prompt.error(e.message)
+    end
+
     # Find an employee with ID and password matching
     # Managers don't require employees' password to access their timesheets
     def self.find_employee(id, password = nil)
@@ -54,13 +62,6 @@ class Employee
         system "clear"
         @prompt.error(e.message)
         retry
-    end
-
-    # Identify if timesheet already exists and return its index position
-    def self.timesheet_index(user_time, timesheet, timesheet_time)
-        day = user_time.day.to_s
-        index = timesheet.find_index { |elem| elem[timesheet_time][8..9].delete_prefix("0") == day }
-        return index
     end
 
     # Add leave into timesheet
@@ -94,7 +95,7 @@ class Employee
     # Create new timesheet
     def self.add_timesheet(user, timesheet, timesheet_time, file)
         start_time, finish_time = Timesheet.validate_date
-        index = timesheet_index(start_time, timesheet, timesheet_time)
+        index = Timesheet.timesheet_index(start_time, timesheet, timesheet_time)
         raise(AddTimesheetError) unless index.nil?
 
         save_file(user, user.id, start_time, finish_time, file) { timesheet << user.timesheets[-1].timesheet }
@@ -108,7 +109,7 @@ class Employee
     # Edit an existing timesheet
     def self.edit_timesheet(user, timesheet, timesheet_time, file)
         start_time, finish_time = Timesheet.validate_date
-        index = timesheet_index(start_time, timesheet, timesheet_time)
+        index = Timesheet.timesheet_index(start_time, timesheet, timesheet_time)
         raise(EditTimesheetError) if index.nil?
 
         save_file(user, user.id, start_time, finish_time, file) { timesheet[index] = user.timesheets[-1].timesheet }

@@ -68,6 +68,13 @@ class Timesheet
         return time
     end
 
+    # Identify if timesheet already exists and return its index position
+    def self.timesheet_index(user_time, timesheet, timesheet_time)
+        day = user_time.day.to_s
+        index = timesheet.find_index { |elem| elem[timesheet_time][8..9].delete_prefix("0") == day }
+        return index
+    end
+
     # Compile info to be displayed to user in an easy-to-read
     def self.display_timesheet(start, finish, leave)
         puts "Start: #{start.strftime('%d.%m.%Y -> %H:%M').bright.green}"

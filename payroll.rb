@@ -11,8 +11,7 @@ require './classes/report'
 prompt = TTY::Prompt.new(interrupt: :signal)
 
 # Upload employees json file and create instances of Employee
-employees = JSON.load_file('json_files/employees.json', symbolize_names: true)
-employees.each { |person| Employee.list_of_employees << Employee.new(person[:name], person[:id], person[:password]) }
+Employee.upload_employees
 
 # Print welcome message
 puts "\n\u{1F553} Welcome to the Alternative Payroll Program \n".blue.bright
