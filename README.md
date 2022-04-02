@@ -8,20 +8,18 @@ This terminal application was created using Ruby language with the purpose of ut
 ____
 1. [Purpose](https://github.com/limagisele/terminal-app#purpose)
 2. [Features](https://github.com/limagisele/terminal-app#features)
-   1. asas
-   2. asas
-   3. asas
-   4. adasd
+   * Sign In
+   * Create Timesheet
+   * Edit Timesheet
+   * Generate Payroll Report
 3. [Documentation](https://github.com/limagisele/terminal-app#documentation)  
-    1. GitHub Repo  
-    2. Kanban Board
-    3. Code Style Guide
-4. [Installation](https://github.com/limagisele/terminal-app#installation)
-   1. Step 1
-   2. Step 2
+    * GitHub Repo  
+    * Kanban Board
+    * Code Style Guide
+4. [Installation Steps](https://github.com/limagisele/terminal-app#installation)
 5. [Usage](https://github.com/limagisele/terminal-app#usage)
-   1. Standard access
-   2. Management access
+   * Standard access
+   * Management access
 6. [CLI Arguments](https://github.com/limagisele/terminal-app#cli-arguments)
 7. [Dependencies](https://github.com/limagisele/terminal-app#dependencies)
 8. [System requirements](https://github.com/limagisele/terminal-app#system-requirements)
@@ -37,7 +35,18 @@ Marin-Guzman, D. (2021). *Kronos hack creates employer ‘nightmare’ over Chri
 
 #### Features
 ____
+* **Sign In**  
+  Users have their access authorised via validation of their employee ID and password. This features is responsible to identify the type of access the employee has as well, being either standard or management level.
+* **Create Timesheet**  
+  New timesheets can be generated in this feature, as long as the date entered by the user belongs to the current payroll week and there is no other timesheet already stored in the file for that user.  
+  Once data is entered, it is displayed at the terminal and user is prompted to confirm it so it can be saved.  
+* **Edit Timesheet**  
+  Before starting to edit, this feature checks if there is a timesheet for the date requested by the user. When found, it accepts the new data, displays the updated version and asks for confirmation before saving it.  
+* **Generate Payroll Report**  
+  This feature is only available to the management team, who can select the option to create a csv file with all timesheet entries stored in the file.  
+  After that, managers have the option to reset the timesheets storage JSON file so it is blank again and ready to start a new payroll cycle/week.
 
+  All the above features contain error handling messages to indicate if the conditions mentioned are not met by the data entered.
 
 #### Documentation
 ____
@@ -49,7 +58,7 @@ ____
   * Reference:  
   The Ruby Style Guide. (2022). *The Ruby Style Guide*. [online] Available at: https://rubystyle.guide/ [Accessed 29 Mar. 2022].
 
-#### Installation
+#### Installation Steps
 ____
 1. Download this [zip file](https://github.com/limagisele/terminal-app/archive/refs/heads/master.zip) from the GitHub repository
 2. Unzip the file
@@ -59,6 +68,34 @@ ____
 
 #### Usage
 ____
+As soon as the program starts it asks for an employee ID and a password. Once they are validated, the user's access leave is automatically identified and the features will behave differently depending if the access is standard or management.  
+
+* Standard Access  
+  Access level for any employee that requires a timesheet to log their hours and is not a manager.  
+  At this level the accepted menu options and access are:  
+  1. Create Timesheet  
+    Users can only view and create their own timesheet.
+  2. Edit Timesheet  
+    Users can only edit an existing timesheet of their own.
+  3. *Access Manager's Options (***Not Applicable***)*
+  4. Exit
+
+* Management Access  
+  This is a restricted access due to employees' privacy and data integrity.
+  For this level the menu options and functionalities are:
+  1. Create Timesheet  
+    This function allows the user to create timesheets for any employee included in the list of employees.  
+    Once this option is selected, it prompts the user which employee they want to access by asking for the employee's ID.  
+    After employee required is found, the program will follow the same steps of creating a timesheet as per explained in the standard level.
+  2. Edit Timesheet  
+   Here users can edit timesheets for any employee included in the list of employees.  
+   Similarly to the create option, the manager will be asked for the employee ID who needs to have the timesheet altered.  
+   When employee is found, the program will follow the standard steps of editing a timesheet.
+  3. Access Manager's Options  
+   It displays a menu with two options:
+      * Create Payroll Report
+      * RESET Timesheet File
+  4. Exit
 
 #### CLI Arguments
 ____
@@ -72,7 +109,7 @@ The arguments used here are:
 #### Dependencies
 ____
 In order to run and test this application successfully, it requires all the gems listed below to be installed.  
-However, if you initiate the program by following the [Installation Steps]() you don't need to worry about installing gems manually and they will be all set and ready to go for you.
+However, if you initiate the program by following the [Installation Steps](https://github.com/limagisele/terminal-app#installation) you don't need to worry about installing gems manually and they will be all set and ready to go for you.
 
 ```ruby
 gem "rspec", "~> 3.11"
