@@ -30,7 +30,7 @@ ____
 ____
 Some companies can struggle to log working hours of their employees when their payroll management software goes out of action for a long period of time, as exemplified in this recent incident here: [Payroll disruption news](https://www.afr.com/work-and-careers/workplace/kronos-hack-creates-employer-nightmare-over-christmas-pay-20211215-p59ht6).  
 
-From that experience, it came the idea to create a simple program that can allow employees to log their working hours independently and managers to generate weekly payroll reports automatically to be sent for payment processing, without the need to record hours on paper timecards or using spreadsheets.
+From that experience, it was originated the idea of creating the Alternative Payroll program, which is a simple program that allows employees to log their working hours independently and managers to generate weekly payroll reports automatically, ready to be sent for payment processing, without the need to record hours on paper timecards or using spreadsheets.
 
 Reference:  
 Marin-Guzman, D. (2021). *Kronos hack creates employer ‘nightmare’ over Christmas pay*. [online] Australian Financial Review. Available at: https://www.afr.com/work-and-careers/workplace/kronos-hack-creates-employer-nightmare-over-christmas-pay-20211215-p59ht6 [Accessed 2 Apr. 2022].
