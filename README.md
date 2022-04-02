@@ -6,7 +6,7 @@ This terminal application was created using Ruby language with the purpose of ut
 
 #### Table of Content
 ____
-1. [Purpose](https://github.com/limagisele/terminal-app#description)
+1. [Purpose](https://github.com/limagisele/terminal-app#purpose)
 2. [Features](https://github.com/limagisele/terminal-app#features)
    1. asas
    2. asas
