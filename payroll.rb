@@ -1,5 +1,7 @@
 require 'json'
+require 'date'
 require 'tty-prompt'
+require 'tty-box'
 require 'rainbow/refinement'
 using Rainbow
 
@@ -12,7 +14,9 @@ prompt = TTY::Prompt.new(interrupt: :signal)
 employees = JSON.load_file('json_files/employees.json', symbolize_names: true)
 employees.each { |person| Employee.list_of_employees << Employee.new(person[:name], person[:id], person[:password]) }
 
-puts "\n Welcome to the Alternative Payroll Program \n".blue.bright.underline
+# Print welcome message
+puts "\n\u{1F553} Welcome to the Alternative Payroll Program \n".blue.bright
+
 begin
     # User signin
     user = Employee.signin
@@ -23,7 +27,7 @@ begin
         # Required so a timesheet can be created and edited while the program si still running
         file = JSON.load_file('json_files/timesheets.json', symbolize_names: true)
         user_timesheet = file.find { |employee| employee[:id] == user.id }
-
+        # Display menu to user
         option = prompt.select("What would you like to do?") do |menu|
             menu.enum "."
             menu.choice "Create Timesheet", 1

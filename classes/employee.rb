@@ -74,7 +74,7 @@ class Employee
         system "clear"
         # Ask for user's confirmation on the new timesheet displayed on the terminal
         Timesheet.template(user.name, start_time, finish_time, leave_taken)
-        input2 = @prompt.yes?("Confirm timesheet above?")
+        input2 = @prompt.yes?("\nConfirm timesheet above?".blue)
         return leave_taken, input2
     end
 

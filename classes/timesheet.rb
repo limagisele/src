@@ -68,6 +68,7 @@ class Timesheet
         return time
     end
 
+    # Compile info to be displayed to user in an easy-to-read
     def self.display_timesheet(start, finish, leave)
         puts "Start: #{start.strftime('%d.%m.%Y -> %H:%M').bright.green}"
         puts "Finish: #{finish.strftime('%d.%m.%Y -> %H:%M').bright.green}"

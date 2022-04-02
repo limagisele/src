@@ -50,10 +50,10 @@
         "name": "Kate Holmes",
         "id": 3333,
         "start_time": "2022-03-30 06:00:00 +1100",
-        "finish_time": "2022-03-30 08:00:00 +1100",
-        "working_hours": 2.0,
-        "leave_type": "Sick",
-        "leave_time": "240"
+        "finish_time": "2022-03-30 12:00:00 +1100",
+        "working_hours": 6.0,
+        "leave_type": "Annual",
+        "leave_time": "120"
       },
       {
         "name": "Kate Holmes",
