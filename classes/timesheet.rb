@@ -39,20 +39,28 @@ class Timesheet
         return date
     end
 
-    # "08" and "09" cannot be casted to Integer so need to delete prefix "0"
-    def self.time_casting(period)
-        input = @prompt.ask("Enter #{period.underline} (HH:MM - 24H):", required: true).split(/:/)
-        new_input = input.map { |number| number.delete_prefix("0") }
-        raise(InvalidTimeError) if new_input.include?('.')
+    # Get start and finish times from the user
+    def self.get_time(period)
+        time = @prompt.ask("Enter #{period.underline} (HH:MM - 24H):", required: true)
+        raise(InvalidTimeError) unless time.include?(':')
 
+        input = time.split(/:/)
+        return input
+    end
+
+    # Times entered by user need to be casted to Integer in order to create an instance of Time in #time
+    # "08" and "09" cannot be casted to Integer so need to delete prefix "0"
+    def self.time_casting(input)
+        new_input = input.map { |number| number.delete_prefix("0") }
         return new_input
     end
 
-    # Get star and finish times from the user
+    # Create instances of Time so start and finish times can be compared in #validate_time
     def self.time(date, period)
         begin
-            input = time_casting(period)
-            time = Time.new(date.year, date.month, date.day, Integer(input[0]), Integer(input[1]), 0)
+            input = get_time(period)
+            new_input = time_casting(input)
+            time = Time.new(date.year, date.month, date.day, Integer(new_input[0]), Integer(new_input[1]), 0)
         rescue ArgumentError
             raise(InvalidTimeError)
         end
@@ -60,7 +68,7 @@ class Timesheet
     end
 
     # Validate date and time entered by the user
-    def self.validate_date
+    def self.validate_time
         start_date = date('start date')
         start_time = time(start_date, 'start time')
         finish_time = time(start_date, 'finish time')

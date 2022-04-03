@@ -96,7 +96,7 @@ class Employee
 
     # Create new timesheet
     def self.add_timesheet(user, timesheet, timesheet_time, file)
-        start_time, finish_time = Timesheet.validate_date
+        start_time, finish_time = Timesheet.validate_time
         index = Timesheet.timesheet_index(start_time, timesheet, timesheet_time)
         raise(AddTimesheetError) unless index.nil?
 
@@ -110,7 +110,7 @@ class Employee
 
     # Edit an existing timesheet
     def self.edit_timesheet(user, timesheet, timesheet_time, file)
-        start_time, finish_time = Timesheet.validate_date
+        start_time, finish_time = Timesheet.validate_time
         index = Timesheet.timesheet_index(start_time, timesheet, timesheet_time)
         raise(EditTimesheetError) if index.nil?
 

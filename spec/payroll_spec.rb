@@ -9,7 +9,7 @@ describe Timesheet do
 
     # Testing related to the Edit Timesheet feature
     # User can only edit a timesheet if there is one saved in the file matching the date entered by the user
-    describe '#find_timesheet' do
+    describe '#timesheet_index' do
         it 'returns array index for the employee\'s timesheet in timesheets.json matching the given date ' do
             start_time = Time.new(2022, 3, 29)
             index = Timesheet.timesheet_index(start_time, user_timesheet[:timesheets], :start_time)
@@ -21,9 +21,11 @@ describe Timesheet do
             expect(index).to be_nil
         end
     end
-    #
-    describe '#time' do
-        it ''
+    # Testing related to Add and Edit Timesheet features
+    describe '#time_casting' do
+        it 'eliminates prefix 0 from hour and minutes entered by user' do
+            expect(Timesheet.time_casting(%w[08 00])).to eq(%w[8 0])
+        end
     end
 end
 
