@@ -40,24 +40,6 @@
       {
         "name": "Kate Holmes",
         "id": 3333,
-        "start_time": "2022-03-31 14:00:00 +1100",
-        "finish_time": "2022-03-31 20:00:00 +1100",
-        "working_hours": 6.0,
-        "leave_type": "Annual",
-        "leave_time": "120"
-      },
-      {
-        "name": "Kate Holmes",
-        "id": 3333,
-        "start_time": "2022-03-30 06:00:00 +1100",
-        "finish_time": "2022-03-30 10:00:00 +1100",
-        "working_hours": 4.0,
-        "leave_type": "Annual",
-        "leave_time": "240"
-      },
-      {
-        "name": "Kate Holmes",
-        "id": 3333,
         "start_time": "2022-03-29 06:00:00 +1100",
         "finish_time": "2022-03-29 13:00:00 +1100",
         "working_hours": 7.0,

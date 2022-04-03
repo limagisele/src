@@ -46,9 +46,10 @@ begin
 
     continue = true
     while continue
-        # Locate employee's timesheets in the file and reload it
-        # Required so a timesheet can be created and edited while the program si still running
+        # Reload timesheets.json file
+        # Reload is required so a timesheet can be created and edited while the program is still running
         file = JSON.load_file('json_files/timesheets.json', symbolize_names: true)
+        # Find employee's timesheet within the file
         user_timesheet = file.find { |employee| employee[:id] == user.id }
         # Display menu to user
         option = prompt.select("What would you like to do?") do |menu|
