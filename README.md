@@ -50,7 +50,7 @@ ____
 
 #### Documentation
 ____
-* [GitHub Repo](https://github.com/limagisele/xxx)
+* [GitHub Repo](https://github.com/limagisele/terminal-app)
 * [Kanban Board](https://trello.com/b/wF75LZtz/alternative-payroll)  
   Trello was the project management platform used for the implementation plan, from start to finish of the this application.
 * [Code Style](https://rubystyle.guide/)
@@ -115,7 +115,7 @@ Once signed in the program already identified your type of access level and a me
 
 #### CLI Arguments
 ____
-Some Command Line Arguments are available at the terminal window by running the command `ruby payroll.rb [argument]`.  
+Command line arguments are available at the terminal with the command `ruby payroll.rb [argument]`.  
 
 The arguments used here are:
 
