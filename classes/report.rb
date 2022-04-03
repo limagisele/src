@@ -1,3 +1,4 @@
+# Importing required libraries
 require 'json'
 require 'csv'
 require 'tty-prompt'

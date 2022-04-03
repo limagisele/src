@@ -1,3 +1,4 @@
+# Importing required libraries
 require 'json'
 require 'tty-prompt'
 require 'rainbow/refinement'
@@ -20,6 +21,7 @@ class Employee
         @name = name
         @id = id
         @password = password
+        # Create a buffer of timesheets created/edited by the user before saving them into the json file
         @timesheets = []
     end
 

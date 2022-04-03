@@ -1,3 +1,4 @@
+# Importing required libraries
 require 'json'
 require 'date'
 require 'tty-prompt'
