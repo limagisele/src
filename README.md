@@ -62,7 +62,7 @@ ____
 * [TDD](https://github.com/limagisele/terminal-app/tree/master/spec)
   * Test Driven Development cycle was utilised to perform unit tests at start of the development phase. 
   * RSpec was utilised to test methods within classes that are related to critical features, such as Sign In, Create Timesheets and Edit Timesheets.
-  * Some mocking tests were completed at start of the development process to ensure the `gets` methods were working as expected. However they were later removed, once the tests became irrelevant after the `gem tty-prompt` was inserted in the source code and already ensuring the right input was being received from the user.
+  * Some mocking tests were completed at start of the development process to ensure the `gets` methods were working as expected. However they were later removed or altered, once the tests became irrelevant after the `gem tty-prompt` was inserted in the source code. That gem helped to ensure only the right input was being received from the user.
 
 #### Installation Steps
 ____
