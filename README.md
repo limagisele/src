@@ -16,6 +16,7 @@ ____
     * GitHub Repo  
     * Kanban Board
     * Code Style Guide
+    * TDD
 4. [Installation Steps](https://github.com/limagisele/terminal-app#installation-steps)
 5. [Usage](https://github.com/limagisele/terminal-app#usage)
    * Standard Access
@@ -51,12 +52,17 @@ ____
 #### Documentation
 ____
 * [GitHub Repo](https://github.com/limagisele/terminal-app)
-* [Kanban Board](https://trello.com/b/wF75LZtz/alternative-payroll)  
+* [Kanban Board (Trello)](https://trello.com/b/wF75LZtz/alternative-payroll)  
   Trello was the project management platform used for the implementation plan, from start to finish of the this application.
+  The Trello board link provides access to the checklist of tasks for each user story, their prioritisation and deadlines worked on during the development process.
 * [Code Style](https://rubystyle.guide/)
   * The source code contained here adheres to The Ruby Style Guide.
   * Reference:  
   The Ruby Style Guide. (2022). *The Ruby Style Guide*. [online] Available at: https://rubystyle.guide/ [Accessed 29 Mar. 2022].
+* [TDD](https://github.com/limagisele/terminal-app/tree/master/spec)
+  * Test Driven Development cycle was utilised to perform unit tests at start of the development phase. 
+  * RSpec was utilised to test methods within classes that are related to critical features, such as Sign In, Create Timesheets and Edit Timesheets.
+  * Some mocking tests were completed at start of the development process to ensure the `gets` methods were working as expected. However they were later removed, once the tests became irrelevant after the `gem tty-prompt` was inserted in the source code and already ensuring the right input was being received from the user.
 
 #### Installation Steps
 ____
