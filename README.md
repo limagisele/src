@@ -16,10 +16,10 @@ ____
     * GitHub Repo  
     * Kanban Board
     * Code Style Guide
-4. [Installation Steps](https://github.com/limagisele/terminal-app#installation)
+4. [Installation Steps](https://github.com/limagisele/terminal-app#installation-steps)
 5. [Usage](https://github.com/limagisele/terminal-app#usage)
-   * Standard access
-   * Management access
+   * Standard Access
+   * Management Access
 6. [CLI Arguments](https://github.com/limagisele/terminal-app#cli-arguments)
 7. [Dependencies](https://github.com/limagisele/terminal-app#dependencies)
 8. [System requirements](https://github.com/limagisele/terminal-app#system-requirements)
@@ -68,34 +68,50 @@ ____
 
 #### Usage
 ____
-As soon as the program starts it asks for an employee ID and a password. Once they are validated, the user's access leave is automatically identified and the features will behave differently depending if the access is standard or management.  
+Start the program then type your employee ID and password.  
+For demo purposes, a database containing a list of employees and their respective ID, password and roles can be found in the file `employees.json`.  
+Once signed in the program already identified your type of access level and a menu will be displayed with the options and functionalities as per below. 
 
-* Standard Access  
-  Access level for any employee that requires a timesheet to log their hours and is not a manager.  
-  At this level the accepted menu options and access are:  
+* Standard Access     
   1. Create Timesheet  
-    Users can only view and create their own timesheet.
+    You can create your own timesheet only.
   2. Edit Timesheet  
-    Users can only edit an existing timesheet of their own.
-  3. *Access Manager's Options (***Not Applicable***)*
+    You can edit an existing timesheet of your own only.
+  3. *Access Manager's Options (***Not Accessible***)*
   4. Exit
 
 * Management Access  
   This is a restricted access due to employees' privacy and data integrity.
-  For this level the menu options and functionalities are:
   1. Create Timesheet  
-    This function allows the user to create timesheets for any employee included in the list of employees.  
-    Once this option is selected, it prompts the user which employee they want to access by asking for the employee's ID.  
-    After employee required is found, the program will follow the standard steps of creating a timesheet.
+    You can create a new timesheet for any employee.
   2. Edit Timesheet  
-   Here users can edit timesheets for any employee included in the list of employees.  
-   Similarly to the create option, the manager will be asked for the employee ID who needs to have the timesheet altered.  
-   When employee is found, the program will follow the standard steps of editing a timesheet.
+    You can edit an existing timesheet for any employee.
   3. Access Manager's Options  
-   It displays a menu with two options:
-      * Create Payroll Report - A confirmation will be prompted before proceeding. If typed 'yes', a csv file will be saved as `report.csv`
-      * RESET Timesheet File - It has the power to erase the `timesheets.json` file so a confirmation will be asked before proceeding. If 'yes' is selected a blank file will be ready to be used at the start of a next pay cycle.
+   You will see another menu with two options:
+      * Create Payroll Report - You can generate a summary of all data entered which will be saved as `report.csv`
+      * RESET Timesheet File - It has the power to erase the `timesheets.json` file so you should only reset it when you want to start tracking hours for a new pay cycle/week.
   4. Exit
+##### Data Entry
+
+1. Creating a new timesheet  
+   You will be asked to enter the following information:
+   1. If you are a manager, you will be asked the employee ID for the person you want to create a timesheet for. If not, you will not see this question.
+   2. Date 
+       * It needs to be within the current week, which is the considered pay cycle here.
+       * Accepted formats are DD/MM/YYYY or DD.MM.YYYY
+    1. Start working time
+       * Accepted format is HH:MM (24h)
+    2. Finish working time
+       * Accepted format is HH:MM (24h)
+    3. Leave (type 'n' if not applicable and this step will be skipped)
+       * Select what type of leave you want to apply
+       * Enter how many **minutes** you want to allocate to the leave
+    4. Confirmation
+       * A summary of the data you entered will be displayed for your confirmation (type 'y' or 'n')
+       * If confirmed, a message will informed that the timesheet has been saved in your file.   
+2. Editing a timesheet  
+   This option follows pretty much the same steps of creating a new timesheet, the only difference is that when you type a date, the program will look for your existing timesheet for that date. If not found, an error message will be displayed.
+   
 
 #### CLI Arguments
 ____
@@ -110,7 +126,7 @@ The arguments used here are:
 #### Dependencies
 ____
 In order to run and test this application successfully, it requires all the gems listed below to be installed.  
-However, if you initiate the program by following the [Installation Steps](https://github.com/limagisele/terminal-app#installation) you don't need to worry about installing gems manually and they will be all set and ready to go for you.
+However, if you initiate the program by following the [Installation Steps](https://github.com/limagisele/terminal-app#installation-steps) you don't need to worry about installing gems manually and they will be all set and ready to go for you.
 
 ```ruby
 gem "rspec", "~> 3.11"

@@ -1,1 +1,29 @@
-help document
+
+Creating a new timesheet  
+   1. If you are a manager, you will be asked the employee ID for the person you want to create a timesheet for. 
+      If not, you will not see this question.
+   2. Date 
+       - It needs to be within the current week
+       - Accepted formats are DD/MM/YYYY or DD.MM.YYYY
+    1. Start working time
+       - Accepted format is HH:MM (24h)
+    2. Finish working time
+       - Accepted format is HH:MM (24h)
+    3. Leave (type 'n' if not applicable and this step will be skipped)
+       - Select type of leave you want to apply
+       - Enter how many minutes you want to allocate to the leave
+    4. Confirmation
+       - Type 'y' to confirm or 'n' to restart
+       - If confirmed, timesheet will be saved in your file.   
+
+Editing a timesheet  
+    Follows same steps of creating a new timesheet. 
+    However, when you type a date, the program will look for your existing timesheet for that date. 
+    If not found, an error message will be displayed.
+
+CLI Arguments
+Accessible by running the command ruby payroll.rb [argument] with one of the arguments below.
+-a or --access -> List an overview of each type of access level  
+-g or --gems -> Output list of gems required
+-h or --help -> You already used this to get here ;)
+
