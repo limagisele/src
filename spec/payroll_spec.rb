@@ -1,7 +1,4 @@
-require 'time'
 require './payroll'
-require './classes/employee'
-require './classes/errors'
 
 describe Timesheet do
     let(:file) { JSON.load_file('json_files/timesheets.json', symbolize_names: true) }

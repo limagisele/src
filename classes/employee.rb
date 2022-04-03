@@ -123,7 +123,7 @@ class Employee
     end
 
     # Give a manager access to any timesheet in the file, for any employee
-    def self.manager_timesheet(file, start_time)
+    def self.manager_access(file, start_time)
         worker_id = @prompt.ask("Enter required employee's ID?", required: true).to_i
         worker = find_employee(worker_id)
         worker_timesheet = file.find { |employee| employee[:id] == worker.id }

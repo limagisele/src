@@ -61,22 +61,27 @@ begin
         end
         case option
         when 1
+            # Manager can create timesheet for any employee
             if user_timesheet[:access_level] == "manager"
-                Employee.manager_timesheet(file, :start_time) do |worker, timesheet|
+                Employee.manager_access(file, :start_time) do |worker, timesheet|
                     Employee.add_timesheet(worker, timesheet, :start_time, file)
                 end
+            # Other employees can only create their own timesheet
             else
                 Employee.add_timesheet(user, user_timesheet[:timesheets], :start_time, file)
             end
         when 2
+            # Manager can edit timesheet for any employee
             if user_timesheet[:access_level] == "manager"
-                Employee.manager_timesheet(file, :start_time) do |worker, timesheet|
+                Employee.manager_access(file, :start_time) do |worker, timesheet|
                     Employee.edit_timesheet(worker, timesheet, :start_time, file)
                 end
+            # Other employees can only edit their own timesheet
             else
                 Employee.edit_timesheet(user, user_timesheet[:timesheets], :start_time, file)
             end
         when 3
+            # Only managers can access report and file options
             if user_timesheet[:access_level] == "manager"
                 input = prompt.select("Select your option:", ["Create Payroll Report", "RESET Timesheet File"])
                 case input
