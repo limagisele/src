@@ -1,4 +1,6 @@
-require './payroll'
+require './classes/employee'
+require './classes/timesheet'
+require './classes/errors'
 
 describe Timesheet do
     let(:file) { JSON.load_file('json_files/timesheets.json', symbolize_names: true) }
@@ -17,9 +19,9 @@ describe Timesheet do
     # User can only edit a timesheet if there is one saved in the file matching the date entered by the user
     describe '#timesheet_index' do
         it 'returns array index for the employee\'s timesheet in timesheets.json matching the given date ' do
-            start_time = Time.new(2022, 3, 29)
+            start_time = Time.new(2022, 4, 1)
             index = Timesheet.timesheet_index(start_time, user_timesheet[:timesheets], :start_time)
-            expect(index).to eq 1
+            expect(index).to eq 0
         end
         it 'returns nil if there is no timesheet for the employee on the given date' do
             start_time = Time.new(2022, 4, 3)
