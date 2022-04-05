@@ -4,7 +4,7 @@
 ___
 This terminal application was created using Ruby language with the purpose of utilising a range of developer tools, going through the processes of conceptualising, designing, planning, testing and implementing the application.
 
-#### Table of Content
+#### Table of Contents
 ____
 1. [Purpose](https://github.com/limagisele/terminal-app#purpose)
 2. [Features](https://github.com/limagisele/terminal-app#features)
