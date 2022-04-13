@@ -2,7 +2,6 @@
 require 'json'
 require 'date'
 require 'tty-prompt'
-require 'tty-box'
 require 'rainbow/refinement'
 using Rainbow
 
